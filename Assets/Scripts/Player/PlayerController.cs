@@ -4,6 +4,10 @@ using UnityEngine.Windows;
 
 public class PlayerController : MonoBehaviour
 {
+    // Control de sprites
+    private SpriteRenderer spriteRenderer;
+    private Animator animator;
+
     // Físicas y colisiones
     private Rigidbody rb;
     [Header("Colission")]
@@ -25,6 +29,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         rb = GetComponent<Rigidbody>();
         personaActiva = 0;
         // Initialize Input Actions
@@ -103,5 +108,10 @@ public class PlayerController : MonoBehaviour
         {
             isSprint = false; // Sprint key is released
         }
+    }
+
+    public void ChangePersona(int personaId)
+    {
+        personaActiva = (short)personaId;
     }
 }

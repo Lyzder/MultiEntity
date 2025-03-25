@@ -4,7 +4,14 @@ using UnityEngine.Windows;
 
 public class PlayerController : MonoBehaviour
 {
+    // Físicas y colisiones
     private Rigidbody rb;
+    [Header("Colission")]
+    [SerializeField] float rangeSweepCast;
+
+    // Estado del jugador
+    private bool isAlive;
+    private short personaActiva;
 
     // Movement variables
     private Vector2 moveInput;
@@ -19,6 +26,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        personaActiva = 0;
         // Initialize Input Actions
         inputActions = new InputSystem_Actions();
     }
@@ -35,6 +43,7 @@ public class PlayerController : MonoBehaviour
     private void OnDisable()
     {
         // Unsubscribe to avoid leakages
+        inputActions.Disable();
         inputActions.Player.Move.performed -= ctx => moveInput = ctx.ReadValue<Vector2>();
         inputActions.Player.Move.canceled -= ctx => moveInput = Vector2.zero;
         inputActions.Player.Sprint.performed -= OnSprint;
@@ -66,8 +75,23 @@ public class PlayerController : MonoBehaviour
     private void Move()
     {
         Vector3 moveDirection = new Vector3(moveInput.x, 0, moveInput.y).normalized;
-        rb.velocity = isSprint ? moveDirection * moveSpeed * sprintMultiplier + Vector3.up * rb.velocity.y : moveDirection * moveSpeed + Vector3.up * rb.velocity.y;
+        float currentSpeed = isSprint ? moveSpeed * sprintMultiplier : moveSpeed;
+
+        Vector3 desiredVelocity = moveDirection * currentSpeed;
+        desiredVelocity.y = rb.velocity.y; // Preserve vertical movement
+
+        // Check if movement will result in a collision
+        if (rb.SweepTest(moveDirection, out RaycastHit hit, rangeSweepCast))
+        {
+            // If collision detected, slide along the obstacle's surface
+            Vector3 slideDirection = Vector3.ProjectOnPlane(moveDirection, hit.normal);
+            desiredVelocity = slideDirection.normalized * currentSpeed;
+            desiredVelocity.y = rb.velocity.y; // Preserve vertical movement
+        }
+
+        rb.velocity = desiredVelocity;
     }
+
 
     public void OnSprint(InputAction.CallbackContext context)
     {

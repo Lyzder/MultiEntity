@@ -66,7 +66,7 @@ public class PlayerController : MonoBehaviour
     private void Move()
     {
         Vector3 moveDirection = new Vector3(moveInput.x, 0, moveInput.y).normalized;
-        rb.velocity = isSprint ? moveDirection * moveSpeed * sprintMultiplier : moveDirection * moveSpeed;
+        rb.velocity = isSprint ? moveDirection * moveSpeed * sprintMultiplier + Vector3.up * rb.velocity.y : moveDirection * moveSpeed + Vector3.up * rb.velocity.y;
     }
 
     public void OnSprint(InputAction.CallbackContext context)

@@ -35,9 +35,9 @@ public class AudioManager : MonoBehaviour
     }
 
     private void Start()
-    {
-        sfxAudio = transform.GetChild(0).GetComponent<AudioSource>();
-        musicAudio = transform.GetChild(1).GetComponent<AudioSource>();
+    {   musicAudio = transform.GetChild(0).GetComponent<AudioSource>();
+        sfxAudio = transform.GetChild(1).GetComponent<AudioSource>();
+        
 
     }
 

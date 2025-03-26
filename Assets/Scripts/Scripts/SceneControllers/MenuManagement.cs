@@ -5,11 +5,12 @@ public class MenuManagement : MonoBehaviour
 {  
     
     void Start()
-    {   
+    {
+
         //Reemplzar la siguiente linea de código la palabra GeneralMusic por la cancion que se desea reproducir
         //AudioManager.Instance.PlayMusic(AudioManager.Instance.GeneralMusic);
-        
-        }
+
+    }
 
     public void clicSound()
     {

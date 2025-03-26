@@ -24,6 +24,7 @@ public class OptionMenu : MonoBehaviour
         sliderGeneral.onValueChanged.AddListener(UpdateGeneralVolume);
         muteToggle.onValueChanged.AddListener(OnMuteToggleChanged);
 
+       
 
     }
     public void OnMuteToggleChanged(bool isMuted)

@@ -68,4 +68,8 @@ public class AudioManager : MonoBehaviour
     {
         Master.SetFloat("SFX", volume);
     }
+    public void GeneralVolumeControl(float volume)
+    {
+        Master.SetFloat("Master", volume);
+    }
 }

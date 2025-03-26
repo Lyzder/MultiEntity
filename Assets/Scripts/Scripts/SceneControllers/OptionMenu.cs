@@ -1,11 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using static UnityEngine.Rendering.DebugUI;
 public class OptionMenu : MonoBehaviour
 {
     
     //Estos son los sliders que se agregan en el inspector
-    [SerializeField] public Slider sliderMusic, sliderSFX;
+    [SerializeField] public Slider sliderMusic, sliderSFX, sliderGeneral;
 
     [SerializeField] private Toggle muteToggle;         // Toggle para silenciar/desilenciar
     private float previousVolumeMusic;
@@ -18,40 +19,64 @@ public class OptionMenu : MonoBehaviour
     {
         previousVolumeMusic = sliderMusic.value;
         previousVolumeSFX = sliderSFX.value;
-        InitializeToggleState();
+        sliderMusic.onValueChanged.AddListener(UpdateMusicVolume);
+        sliderSFX.onValueChanged.AddListener(UpdateSFXVolume);
+        sliderGeneral.onValueChanged.AddListener(UpdateGeneralVolume);
+        muteToggle.onValueChanged.AddListener(OnMuteToggleChanged);
+
+
+    }
+    public void OnMuteToggleChanged(bool isMuted)
+    {
+        if (isMuted)
+        {
+            // Guardamos los valores actuales antes de silenciar
+            previousVolumeMusic = sliderMusic.value;
+            previousVolumeSFX = sliderSFX.value;
+
+            // Silenciamos
+            AudioManager.Instance.MusicVolumeControl(-80f);
+            AudioManager.Instance.SFXVolumeControl(-80f);
+            sliderMusic.interactable = false;
+            sliderSFX.interactable = false;
+        }
+        else
+        {
+            // Restauramos volúmenes anteriores
+            AudioManager.Instance.MusicVolumeControl(previousVolumeMusic);
+            AudioManager.Instance.SFXVolumeControl(previousVolumeSFX);
+            sliderMusic.value = previousVolumeMusic;
+            sliderSFX.value = previousVolumeSFX;
+            sliderMusic.interactable = true;
+            sliderSFX.interactable = true;
+        }
+    }
+    public void UpdateGeneralVolume(float value)
+    {
+        if (sliderGeneral != null)
+        {
+            AudioManager.Instance.GeneralVolumeControl(value);
+        }
     }
     //Este metodo se encargan de Actualizar el volumen de la música
-    public void UpdateMusicVolume()
+    public void UpdateMusicVolume(float value)
     {
-        if (sliderSFX != null)
+        
+        if (sliderMusic != null)
         {
-            AudioManager.Instance.SFXVolumeControl(sliderSFX.value);
+            AudioManager.Instance.MusicVolumeControl(value); // Actualizamos el volumen de la música
         }
     }
 
     //Este metodo se encargan de Actualizar el volumen de los efectos de sonido
-    public void UpdateSFXVolume()
+    public void UpdateSFXVolume(float value)
     {
-        if (sliderMusic != null)
+        if (sliderSFX != null)
         {
-            AudioManager.Instance.MusicVolumeControl(sliderMusic.value);
+            AudioManager.Instance.SFXVolumeControl(value);
         }
     }
-    void InitializeToggleState()
-    {
-        //muteToggle.isOn = false;
-        if (muteToggle.isOn)
-        {
-            AudioManager.Instance.MusicVolumeControl(-80f);
-            AudioManager.Instance.SFXVolumeControl(-80f);
-        }
-        if (muteToggle.isOn == false)
-        {
-            AudioManager.Instance.MusicVolumeControl(previousVolumeMusic);
-            AudioManager.Instance.SFXVolumeControl(previousVolumeSFX);
-        }
-
-    }
+ 
 
     
    

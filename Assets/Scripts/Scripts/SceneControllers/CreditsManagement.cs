@@ -9,7 +9,8 @@ public class CreditsManagement : MonoBehaviour
         SceneManager.UnloadSceneAsync("CreditsMenu");
     }
     public void clicSound()
-    {
-        AudioManager.Instance.PlayFX("start");
+    {   
+        //Reemplzar la siguiente linea de código la palabra GeneralMusic por la cancion que se desea reproducir
+        //AudioManager.Instance.PlayMusic(AudioManager.Instance.GeneralMusic);
     }
 }

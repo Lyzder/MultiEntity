@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
 
     // Estado del jugador
     private bool isAlive;
-    private short personaActiva;
+    public short personaActiva { get; private set; }
 
     // Movement variables
     private Vector2 moveInput;
@@ -44,8 +44,6 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.Move.canceled += ctx => moveInput = Vector2.zero;
         inputActions.Player.Sprint.performed += OnSprint;
         inputActions.Player.Sprint.canceled += OnSprint;
-        inputActions.Player.Interact.performed += ctx => ChangePersona(1);
-        inputActions.Player.Interact.canceled += ctx => ChangePersona(0);
     }
 
     private void OnDisable()
@@ -56,8 +54,6 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.Move.canceled -= ctx => moveInput = Vector2.zero;
         inputActions.Player.Sprint.performed -= OnSprint;
         inputActions.Player.Sprint.canceled -= OnSprint;
-        inputActions.Player.Interact.performed -= ctx => ChangePersona(1);
-        inputActions.Player.Interact.canceled -= ctx => ChangePersona(0);
     }
 
     // Start is called before the first frame update
@@ -91,7 +87,7 @@ public class PlayerController : MonoBehaviour
         desiredVelocity.y = rb.velocity.y; // Preserve vertical movement
 
         // Check if movement will result in a collision
-        if (rb.SweepTest(moveDirection, out RaycastHit hit, rangeSweepCast))
+        if (rb.SweepTest(moveDirection, out RaycastHit hit, rangeSweepCast) && !hit.collider.isTrigger)
         {
             // If collision detected, slide along the obstacle's surface
             Vector3 slideDirection = Vector3.ProjectOnPlane(moveDirection, hit.normal);
@@ -117,7 +113,7 @@ public class PlayerController : MonoBehaviour
 
     public void ChangePersona(int personaId)
     {
-        Debug.Log("Pressed");
+        Debug.Log("Cambio");
         personaActiva = (short)personaId;
         animator.SetInteger("PersonaActiva", personaId);
     }

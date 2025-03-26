@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
     {
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         rb = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
         personaActiva = 0;
         // Initialize Input Actions
         inputActions = new InputSystem_Actions();
@@ -43,6 +44,8 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.Move.canceled += ctx => moveInput = Vector2.zero;
         inputActions.Player.Sprint.performed += OnSprint;
         inputActions.Player.Sprint.canceled += OnSprint;
+        inputActions.Player.Interact.performed += ctx => ChangePersona(1);
+        inputActions.Player.Interact.canceled += ctx => ChangePersona(0);
     }
 
     private void OnDisable()
@@ -53,6 +56,8 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.Move.canceled -= ctx => moveInput = Vector2.zero;
         inputActions.Player.Sprint.performed -= OnSprint;
         inputActions.Player.Sprint.canceled -= OnSprint;
+        inputActions.Player.Interact.performed -= ctx => ChangePersona(1);
+        inputActions.Player.Interact.canceled -= ctx => ChangePersona(0);
     }
 
     // Start is called before the first frame update
@@ -112,6 +117,8 @@ public class PlayerController : MonoBehaviour
 
     public void ChangePersona(int personaId)
     {
+        Debug.Log("Pressed");
         personaActiva = (short)personaId;
+        animator.SetInteger("PersonaActiva", personaId);
     }
 }

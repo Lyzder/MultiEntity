@@ -4,12 +4,12 @@ using UnityEngine.SceneManagement;
 
 public class AudioManager2 : MonoBehaviour
 {
-    public static AudioManager Instance { get; private set; }
+    public static AudioManager2 Instance { get; private set; }
 
     [SerializeField] private AudioSource sfxAudio, musicAudio;
     [SerializeField] private AudioMixer Master;
 
-    [Header("Música de Fondo")]
+    [Header("Mï¿½sica de Fondo")]
     public AudioClip mainMenuMusic;
     public AudioClip GeneralMusic;
 
@@ -48,7 +48,7 @@ public class AudioManager2 : MonoBehaviour
 
     public void PlayMusic(AudioClip clip)
     {
-        if (musicAudio.clip == clip) return; // Evita reiniciar la misma música
+        if (musicAudio.clip == clip) return; // Evita reiniciar la misma mï¿½sica
 
         musicAudio.Stop();
         musicAudio.clip = clip;

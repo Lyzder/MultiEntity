@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
 
     // Estado del jugador
     private bool isAlive;
-    private short personaActiva;
+    //private short personaActiva;
 
     // Movement variables
     private Vector2 moveInput;
@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        personaActiva = 0;
+        //personaActiva = 0;
         // Initialize Input Actions
         inputActions = new InputSystem_Actions();
     }
@@ -102,6 +102,21 @@ public class PlayerController : MonoBehaviour
         else if (context.canceled)
         {
             isSprint = false; // Sprint key is released
+        }
+    }
+
+
+
+    private void OnCollisionEnter(Collision other)
+    {
+
+        
+        if (other.gameObject.CompareTag("Llaves"))
+        {
+            //Activamos lq espada en el jugador pero la destruimos la que esta en el campo
+            Destroy(other.gameObject);
+            
+            //StartCoroutine(TemporizadorEspada()); // Iniciar corrutina para desactivarla en 5 segundos
         }
     }
 }

@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
+using System.Collections;
+
 
 public class PlayerController : MonoBehaviour
 {
@@ -22,7 +24,11 @@ public class PlayerController : MonoBehaviour
 
     // Input
     private InputSystem_Actions inputActions;
+    private Renderer playerRenderer;
+    private Color originalColor;
 
+    private Color currentKeyColor;
+    private bool hasKeyColor = false;
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -54,6 +60,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         EnableControl();
+        playerRenderer = GetComponent<Renderer>();
+        originalColor = playerRenderer.material.color;
     }
 
     // Update is called once per frame
@@ -107,16 +115,60 @@ public class PlayerController : MonoBehaviour
 
 
 
-    private void OnCollisionEnter(Collision other)
+    private void OnTriggerEnter(Collider other)
     {
-
-        
         if (other.gameObject.CompareTag("Llaves"))
         {
-            //Activamos lq espada en el jugador pero la destruimos la que esta en el campo
-            Destroy(other.gameObject);
-            
-            //StartCoroutine(TemporizadorEspada()); // Iniciar corrutina para desactivarla en 5 segundos
+            Renderer llaveRenderer = other.gameObject.GetComponent<Renderer>();
+            if (llaveRenderer != null)
+            {
+                currentKeyColor = llaveRenderer.material.color;
+                playerRenderer.material.color = currentKeyColor;
+                hasKeyColor = true;
+            }
+        }
+
+        if (other.gameObject.CompareTag("Puerta"))
+        {
+            if (hasKeyColor && playerRenderer.material.color == currentKeyColor)
+            {
+                Renderer puertaRenderer = other.gameObject.GetComponent<Renderer>();
+                if (puertaRenderer != null)
+                {
+                    StartCoroutine(CambiarColorPuertaTemporal(puertaRenderer, currentKeyColor, 5f));
+                }
+            }
         }
     }
+
+    
+
+
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Llaves"))
+        {   StartCoroutine(CambiarColorTemporal(15f)); // 5 segundos
+            
+            
+        }
+        
+    }
+    private IEnumerator CambiarColorPuertaTemporal(Renderer puertaRenderer, Color nuevoColor, float duracion)
+    {
+        Color colorOriginal = puertaRenderer.material.color;
+        puertaRenderer.material.color = nuevoColor;
+        yield return new WaitForSeconds(duracion);
+        puertaRenderer.material.color = colorOriginal;
+    }
+
+
+
+    private IEnumerator CambiarColorTemporal(float duracion)
+    {
+        
+        yield return new WaitForSeconds(duracion);
+        playerRenderer.material.color = originalColor;
+    }
 }
+

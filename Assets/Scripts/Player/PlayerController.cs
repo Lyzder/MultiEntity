@@ -4,6 +4,10 @@ using UnityEngine.Windows;
 
 public class PlayerController : MonoBehaviour
 {
+    // Control de sprites
+    private SpriteRenderer spriteRenderer;
+    private Animator animator;
+
     // Físicas y colisiones
     private Rigidbody rb;
     [Header("Colission")]
@@ -11,7 +15,7 @@ public class PlayerController : MonoBehaviour
 
     // Estado del jugador
     private bool isAlive;
-    private short personaActiva;
+    public short personaActiva { get; private set; }
 
     // Movement variables
     private Vector2 moveInput;
@@ -25,7 +29,9 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         rb = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
         personaActiva = 0;
         // Initialize Input Actions
         inputActions = new InputSystem_Actions();
@@ -81,7 +87,7 @@ public class PlayerController : MonoBehaviour
         desiredVelocity.y = rb.velocity.y; // Preserve vertical movement
 
         // Check if movement will result in a collision
-        if (rb.SweepTest(moveDirection, out RaycastHit hit, rangeSweepCast))
+        if (rb.SweepTest(moveDirection, out RaycastHit hit, rangeSweepCast) && !hit.collider.isTrigger)
         {
             // If collision detected, slide along the obstacle's surface
             Vector3 slideDirection = Vector3.ProjectOnPlane(moveDirection, hit.normal);
@@ -103,5 +109,12 @@ public class PlayerController : MonoBehaviour
         {
             isSprint = false; // Sprint key is released
         }
+    }
+
+    public void ChangePersona(int personaId)
+    {
+        Debug.Log("Cambio");
+        personaActiva = (short)personaId;
+        animator.SetInteger("PersonaActiva", personaId);
     }
 }

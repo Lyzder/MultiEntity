@@ -1,14 +1,30 @@
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance { get; private set; }
 
-    private AudioSource fxSource;
-    private AudioSource musicSource;
+    [SerializeField] private AudioSource sfxAudio, musicAudio;
+    [SerializeField] private AudioMixer Master;
 
-    [SerializeField] public AudioMixer audioMixer;
+    [Header("Música de Fondo")]
+    public AudioClip mainMenuMusic;
+    public AudioClip GeneralMusic;
+
+    /*
+     * Evitar cargar el manager con efectos de sonido. El manager debe encargarse de reproducir lo que le mandan, por eso los métodos son públicos.
+     * Colocar los efectos de sonido aquí dificulta reproducir lo que cada objeto necesita reproducir y carga el script con demasiadas variables
+     * - Santiago
+     */
+
+    //[Header("Efectos de sonido")]
+    //public AudioClip Collision_Bala_and_Obstacle_Sound;
+    //public AudioClip VictorySound;
+    //public AudioClip DefeatSound;
+    //public AudioClip Walking;
+
 
     private void Awake()
     {
@@ -19,73 +35,59 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            Destroy(this.gameObject);
-        }
-
-        // Inicializa las fuentes de audio
-        fxSource = gameObject.AddComponent<AudioSource>();
-        musicSource = gameObject.AddComponent<AudioSource>();
-        // Inicializamos el Mixer
-        audioMixer = Resources.Load<AudioMixer>("AudioMaster");
-
-        // Asignamos canales al audioMixer
-        if (audioMixer != null)
-        {
-            // Asigna el canal "Fx" al fxSource
-            fxSource.outputAudioMixerGroup = audioMixer.FindMatchingGroups("Fx")[0];
-
-            // Asigna el canal "Music" al musicSource
-            musicSource.outputAudioMixerGroup = audioMixer.FindMatchingGroups("Music")[0];
-            
-            // Asigna el canal "General" al musicSource
-            //musicSource.outputAudioMixerGroup = audioMixer.FindMatchingGroups("Master")[0];
-        }
-        else
-        {
-            Debug.LogWarning("El mixer de audio no se pudo cargar.");
+            Destroy(gameObject);
         }
     }
 
-    // Método para reproducir efectos de sonido
-    public void PlayFX(string clipName)
+    private void Start()
+    {   musicAudio = transform.GetChild(0).GetComponent<AudioSource>();
+        sfxAudio = transform.GetChild(1).GetComponent<AudioSource>();
+        
+
+    }
+
+    /// <summary>
+    /// Reproducir efecto de sonido sin ubicación espacial
+    /// </summary>
+    /// <param name="clip"></param>
+    public void PlaySFX(AudioClip clip)
     {
-        string path = $"Audio/Fx/{clipName}"; // Ruta dentro de la carpeta Resources
-        AudioClip clip = Resources.Load<AudioClip>(path); // Carga el archivo .wav
-        if (clip != null)
-        {
-            fxSource.PlayOneShot(clip);
-        }
-        else
-        {
-            Debug.LogWarning($"No se encontró el archivo de audio: {path}");
-        }
+        sfxAudio.PlayOneShot(clip);
     }
-    
-    // Método para reproducir música
-    public void PlayMusic(string clipName, bool loop = true)
+
+    /// <summary>
+    /// Reproducir efecto de sonido con ubicación espacial. Requiere que el objeto tenga su propia fuente de sonido configurada en 3D
+    /// </summary>
+    /// <param name="clip"></param>
+    /// <param name="source"></param>
+    public void PlaySFXDirectional(AudioClip clip, AudioSource source)
     {
-        string path = $"Audio/Music/{clipName}"; // Ruta dentro de la carpeta Resources
-        AudioClip clip = Resources.Load<AudioClip>(path); // Carga el archivo .wav
-        if (clip != null)
-        {
-            musicSource.clip = clip;
-            musicSource.loop = loop;
-            musicSource.Play();
-        }
-        else
-        {
-            Debug.LogWarning($"No se encontró el archivo de audio: {path}");
-        }
+        source.PlayOneShot(clip);
     }
 
-    // Método para detener la música
-    public void StopMusic()
+    public void PlayMusic(AudioClip clip)
     {
-        if (musicSource.isPlaying)
-        {
-            musicSource.Stop();
-        }
+        if (musicAudio.clip == clip) return; // Evita reiniciar la misma música
+
+        musicAudio.Stop();
+        musicAudio.clip = clip;
+        musicAudio.Play();
+        musicAudio.loop = true;
     }
 
 
+
+    public void MusicVolumeControl(float volume)
+    {
+        Master.SetFloat("Musica", volume);
+    }
+
+    public void SFXVolumeControl(float volume)
+    {
+        Master.SetFloat("SFX", volume);
+    }
+    public void GeneralVolumeControl(float volume)
+    {
+        Master.SetFloat("Master", volume);
+    }
 }

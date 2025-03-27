@@ -1,97 +1,91 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using static UnityEngine.Rendering.DebugUI;
 public class OptionMenu : MonoBehaviour
 {
-    public Slider fxSlider;
-    public Slider musicSlider;
-    public Slider generalSlider;
+    
+    //Estos son los sliders que se agregan en el inspector
+    [SerializeField] public Slider sliderMusic, sliderSFX, sliderGeneral;
 
     [SerializeField] private Toggle muteToggle;         // Toggle para silenciar/desilenciar
-    private float previousVolume;
+    private float previousVolumeMusic;
+    private float previousVolumeSFX;
     void Awake()
     {
-        float sfxVolume = PlayerPrefs.GetFloat("FxVolume", 0f); // Valor predeterminado en 0 dB
-        float musicVolume = PlayerPrefs.GetFloat("MusicVolume", 0f); // Valor predeterminado en 0 dB
-        float generalVolume = PlayerPrefs.GetFloat("GeneralVolume", 0f); // Valor predeterminado en 0 dB   
-        fxSlider.value = sfxVolume;
-        musicSlider.value = musicVolume;
-        generalSlider.value = generalVolume;
-
-        SetFxVolume(sfxVolume);
-        SetGeneralVolume(musicVolume);
-        SetMusicVolume(musicVolume);
+        
     }
     void Start()
     {
-        // Asignar los métodos a los eventos de cambio de valor de los sliders
-        fxSlider.onValueChanged.AddListener(SetFxVolume); 
-        musicSlider.onValueChanged.AddListener(SetMusicVolume);
-        generalSlider.onValueChanged.AddListener(SetGeneralVolume);
-
+        previousVolumeMusic = sliderMusic.value;
+        previousVolumeSFX = sliderSFX.value;
+        sliderMusic.onValueChanged.AddListener(UpdateMusicVolume);
+        sliderSFX.onValueChanged.AddListener(UpdateSFXVolume);
+        sliderGeneral.onValueChanged.AddListener(UpdateGeneralVolume);
         muteToggle.onValueChanged.AddListener(OnMuteToggleChanged);
-        InitializeToggleState();
-    }
 
-    void InitializeToggleState()
-    {
-        //muteToggle.isOn = false;
-        float currentVolume;
-        AudioManager.Instance.audioMixer.GetFloat("Master",out currentVolume);
-        muteToggle.isOn = currentVolume == -80f;
+       
+
     }
-    void OnMuteToggleChanged(bool isMuted)
+    public void OnMuteToggleChanged(bool isMuted)
     {
         if (isMuted)
         {
-            // Guarda el volumen actual antes de mutear
-            AudioManager.Instance.audioMixer.GetFloat("Master", out previousVolume);
+            // Guardamos los valores actuales antes de silenciar
+            previousVolumeMusic = sliderMusic.value;
+            previousVolumeSFX = sliderSFX.value;
 
-            // Silencia el volumen (establece el volumen a -80 dB)
-            AudioManager.Instance.audioMixer.SetFloat("Master", -80f);
+            // Silenciamos
+            AudioManager.Instance.MusicVolumeControl(-80f);
+            AudioManager.Instance.SFXVolumeControl(-80f);
+            sliderMusic.interactable = false;
+            sliderSFX.interactable = false;
         }
         else
         {
-            // Restaura el volumen anterior
-            AudioManager.Instance.audioMixer.SetFloat("Master", previousVolume);
+            // Restauramos volúmenes anteriores
+            AudioManager.Instance.MusicVolumeControl(previousVolumeMusic);
+            AudioManager.Instance.SFXVolumeControl(previousVolumeSFX);
+            sliderMusic.value = previousVolumeMusic;
+            sliderSFX.value = previousVolumeSFX;
+            sliderMusic.interactable = true;
+            sliderSFX.interactable = true;
         }
     }
-    public void SetFxVolume(float volume)
+    public void UpdateGeneralVolume(float value)
     {
-        Debug.Log($"Setting FX Volume: {volume}");
-        if (AudioManager.Instance.audioMixer != null)
+        if (sliderGeneral != null)
         {
-            // Asigna directamente el valor en dB al AudioMixer
-            AudioManager.Instance.audioMixer.SetFloat("Fx", volume);
-            PlayerPrefs.SetFloat("FxVolume", volume); // Guarda el valor
+            AudioManager.Instance.GeneralVolumeControl(value);
+        }
+    }
+    //Este metodo se encargan de Actualizar el volumen de la música
+    public void UpdateMusicVolume(float value)
+    {
+        
+        if (sliderMusic != null)
+        {
+            AudioManager.Instance.MusicVolumeControl(value); // Actualizamos el volumen de la música
         }
     }
 
-    // Método para ajustar el volumen de la música
-    public void SetMusicVolume(float volume)
+    //Este metodo se encargan de Actualizar el volumen de los efectos de sonido
+    public void UpdateSFXVolume(float value)
     {
-        Debug.Log($"Setting Music Volume: {volume}");
-        if (AudioManager.Instance.audioMixer != null)
+        if (sliderSFX != null)
         {
-            // Asigna directamente el valor en dB al AudioMixer
-            AudioManager.Instance.audioMixer.SetFloat("Music", volume);
-            PlayerPrefs.SetFloat("MusicVolume", volume); // Guarda el valor
+            AudioManager.Instance.SFXVolumeControl(value);
         }
     }
-    // Método para ajustar el volumen del general
-    public void SetGeneralVolume(float volume)
-    {
-        Debug.Log($"Setting General Volume: {volume}");
-        if (AudioManager.Instance.audioMixer != null)
-        {
-            // Asigna directamente el valor en dB al AudioMixer
-            AudioManager.Instance.audioMixer.SetFloat("Master", volume);
-            PlayerPrefs.SetFloat("GeneralVolume", volume); // Guarda el valor
-        }
-    }
+ 
+
+    
+   
+  
     public void clicSound()
     {
-        AudioManager.Instance.PlayFX("start");
+        //Reemplzar la siguiente linea de código la palabra GeneralMusic por la cancion que se desea reproducir
+        //AudioManager.Instance.PlayMusic(AudioManager.Instance.GeneralMusic);
     }
 
     public void exitMenu()

@@ -138,7 +138,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4213714783248703066}
-  - component: {fileID: 7143820610314924771}
+  - component: {fileID: 1379540084513475254}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -159,11 +159,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1167691734729606819}
   - {fileID: 1678671784022582239}
+  - {fileID: 1167691734729606819}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7143820610314924771
+--- !u!114 &1379540084513475254
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -175,16 +175,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fbe8f723b1e5f74ab88d1030f688e80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sfxAudio: {fileID: 0}
-  musicAudio: {fileID: 0}
+  sfxAudio: {fileID: 8739613699858007245}
+  musicAudio: {fileID: 4928842221902213860}
   Master: {fileID: 24100000, guid: 18de3fc248bf54843bd43bb5ad9148a6, type: 2}
   mainMenuMusic: {fileID: 0}
-  GeneralMusic: {fileID: 0}
+  GeneralMusic: {fileID: 8300000, guid: 043c8c2e85cd3624abab7174863169e4, type: 3}
   jumpSound: {fileID: 8300000, guid: efce18b845870cb459909d51616ce8ed, type: 3}
   Collision_Bala_and_Obstacle_Sound: {fileID: 8300000, guid: d6a4e04c0eaefe94b9846ea5363a5c1c,
     type: 3}
   VictorySound: {fileID: 8300000, guid: ac8858d0d283cfa45add5b955a1a8098, type: 3}
   DefeatSound: {fileID: 8300000, guid: fd3438d983cd03d4b9acf13aa6889c51, type: 3}
+  Walking: {fileID: 8300000, guid: 799145e676fa23346b6c0d6ced14ade1, type: 3}
 --- !u!1 &9004203898727393766
 GameObject:
   m_ObjectHideFlags: 0

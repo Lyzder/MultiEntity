@@ -18,7 +18,14 @@ public class PlayerController : MonoBehaviour
     // Estado del jugador
     private bool isAlive;
     public short personaActiva { get; private set; } // 0: Default. 1: Dep. 2: Int
-    public short estadoJugador { get; private set; }
+    public enum Estados : ushort
+    {
+        Defecto = 0,
+        Daño = 1,
+        Sigilo = 2,
+        Empujar = 3,
+    }
+    public Estados estadoJugador { get; private set; }
 
     // Movement variables
     private Vector2 moveInput;
@@ -39,6 +46,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] BoxCollider frontalTrigger;
     [SerializeField] SpriteRenderer topSprite;
     private List<InteractableBase> objectsInRange;
+    private GameObject pushingObj;
 
     // Efectos de sonido
     [Header("Efectos de sonido")]
@@ -55,6 +63,7 @@ public class PlayerController : MonoBehaviour
         isSneak = false;
         isObserve = false;
         lookLeft = false;
+        estadoJugador = 0;
         topSprite.enabled = false;
         objectsInRange = new List<InteractableBase>();
 
@@ -69,6 +78,7 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.Move.canceled += ctx => moveInput = Vector2.zero;
         inputActions.Player.Sprint.performed += OnSkill;
         inputActions.Player.Sprint.canceled += OnSkill;
+        inputActions.Player.Interact.performed += OnInteract;
     }
 
     private void OnDisable()
@@ -79,6 +89,7 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.Move.canceled -= ctx => moveInput = Vector2.zero;
         inputActions.Player.Sprint.performed -= OnSkill;
         inputActions.Player.Sprint.canceled -= OnSkill;
+        inputActions.Player.Interact.performed -= OnInteract;
     }
 
     // Start is called before the first frame update
@@ -172,7 +183,17 @@ public class PlayerController : MonoBehaviour
 
     private void OnInteract(InputAction.CallbackContext context)
     {
+        InteractableBase obj;
 
+        if (estadoJugador == Estados.Defecto)
+        {
+            obj = GetCloserObject();
+            obj.Interact(this);
+        }
+        else if (estadoJugador == Estados.Empujar)
+        {
+            StopPush();
+        }
     }
 
     public void ChangePersona(int personaId)
@@ -195,7 +216,11 @@ public class PlayerController : MonoBehaviour
 
     private void ShowCanInteract()
     {
-        if (objectsInRange.Count > 0) 
+        if (estadoJugador == Estados.Daño || estadoJugador == Estados.Empujar)
+        {
+            topSprite.enabled = false;
+        }
+        else if (objectsInRange.Count > 0) 
         { 
             topSprite.enabled = true;
         }
@@ -215,8 +240,32 @@ public class PlayerController : MonoBehaviour
         objectsInRange.Remove(obj);
     }
 
-    private void StartPush(GameObject obj)
+    public void StartPush(GameObject obj)
     {
         obj.transform.SetParent(transform);
+        pushingObj = obj;
+        estadoJugador = Estados.Empujar;
+    }
+
+    private void StopPush()
+    {
+        pushingObj.transform.SetParent(null);
+        pushingObj = null;
+        estadoJugador = Estados.Defecto;
+    }
+
+    private InteractableBase GetCloserObject()
+    {
+        InteractableBase closeObj = null;
+        float dist = 50f;
+        foreach(InteractableBase obj in objectsInRange)
+        {
+            if (Vector3.Distance(obj.transform.position, transform.position) < dist)
+            {
+                dist = Vector3.Distance(obj.transform.position, transform.position);
+                closeObj = obj;
+            }
+        }
+        return closeObj;
     }
 }

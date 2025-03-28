@@ -19,7 +19,7 @@ public class InteractableBase : MonoBehaviour
         
     }
 
-    public virtual void Interact()
+    public virtual void Interact(PlayerController player)
     {
         Debug.Log("Interactuado");
     }

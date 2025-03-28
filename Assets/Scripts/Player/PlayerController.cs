@@ -148,7 +148,7 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Llaves"))
-        {   StartCoroutine(CambiarColorTemporal(15f)); // 5 segundos
+        {   StartCoroutine(CambiarColorTemporal(5f)); // 5 segundos
             
             
         }

@@ -19,12 +19,6 @@ public class AudioManager : MonoBehaviour
      * - Santiago
      */
 
-    //[Header("Efectos de sonido")]
-    //public AudioClip Collision_Bala_and_Obstacle_Sound;
-    //public AudioClip VictorySound;
-    //public AudioClip DefeatSound;
-    //public AudioClip Walking;
-
 
     private void Awake()
     {
@@ -40,10 +34,8 @@ public class AudioManager : MonoBehaviour
     }
 
     private void Start()
-    {   musicAudio = transform.GetChild(0).GetComponent<AudioSource>();
-        sfxAudio = transform.GetChild(1).GetComponent<AudioSource>();
+    {   
         
-
     }
 
     /// <summary>

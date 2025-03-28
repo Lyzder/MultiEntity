@@ -8,11 +8,14 @@ TagManager:
   - Puerta
   - Nota1
   - Nota2
+  - NPC
+  - Push
+  - Interact
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Occlusible Object
   - Water
   - UI
   - 

@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
 using System.Collections;
+using UnityEngine.UI;
 
 
 public class PlayerController : MonoBehaviour
@@ -10,6 +11,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     [Header("Colission")]
     [SerializeField] float rangeSweepCast;
+    [SerializeField] private Toggle ToggleNota1, ToggleNota2;
 
     // Estado del jugador
     private bool isAlive;
@@ -21,6 +23,9 @@ public class PlayerController : MonoBehaviour
     [Header("Movement speed")]
     public float moveSpeed = 4f;
     public float sprintMultiplier = 2.1f;
+    private bool PlayerCercano_a_Nota1 = false;
+    private bool PlayerCercano_a_Nota2 = false;
+
 
     // Input
     private InputSystem_Actions inputActions;
@@ -28,7 +33,9 @@ public class PlayerController : MonoBehaviour
     private Color originalColor;
 
     private Color currentKeyColor;
-    private bool hasKeyColor = false;
+    private bool hasKey = false;
+    private bool tieneNota1 = false;
+    private bool tieneNota2 = false;
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -62,12 +69,30 @@ public class PlayerController : MonoBehaviour
         EnableControl();
         playerRenderer = GetComponent<Renderer>();
         originalColor = playerRenderer.material.color;
+        ToggleNota1.interactable = false;
+        ToggleNota2.interactable = false;
     }
 
     // Update is called once per frame
     void Update()
     {
         Move();
+        if (Keyboard.current.eKey.wasPressedThisFrame && PlayerCercano_a_Nota1)
+        {
+            tieneNota1 = true;
+            ToggleNota1.isOn = true;
+            
+
+        }
+        if (Keyboard.current.eKey.wasPressedThisFrame && PlayerCercano_a_Nota2)
+        {
+            tieneNota2 = true;
+            ToggleNota2.isOn = true;
+
+
+        }
+
+
     }
 
     public void EnableControl()
@@ -124,51 +149,63 @@ public class PlayerController : MonoBehaviour
             {
                 currentKeyColor = llaveRenderer.material.color;
                 playerRenderer.material.color = currentKeyColor;
-                hasKeyColor = true;
+                hasKey = true;
             }
         }
 
-        if (other.gameObject.CompareTag("Puerta"))
+        if (other.gameObject.CompareTag("Nota1"))
         {
-            if (hasKeyColor && playerRenderer.material.color == currentKeyColor)
-            {
-                Renderer puertaRenderer = other.gameObject.GetComponent<Renderer>();
-                if (puertaRenderer != null)
-                {
-                    StartCoroutine(CambiarColorPuertaTemporal(puertaRenderer, currentKeyColor, 5f));
-                }
-            }
+            //Debug.Log("Entraste");
+            PlayerCercano_a_Nota1 = true;
         }
+        if (other.gameObject.CompareTag("Nota2"))
+        {
+            Debug.Log("Entraste");
+            PlayerCercano_a_Nota2 = true;
+        }
+
     }
-
-    
-
-
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Llaves"))
-        {   StartCoroutine(CambiarColorTemporal(5f)); // 5 segundos
-            
-            
+        if (other.gameObject.CompareTag("Nota1"))
+        {
+            //Debug.Log("Saliste");
+            PlayerCercano_a_Nota1 = false;
+        }
+        if (other.gameObject.CompareTag("Nota2"))
+        {
+            Debug.Log("Saliste");
+            PlayerCercano_a_Nota2 = false;
+        }
+
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Puerta"))
+        {
+            if (hasKey && tieneNota1 && tieneNota2)
+            {
+                Renderer puertaRenderer = collision.gameObject.GetComponent<Renderer>();
+                if (puertaRenderer != null)
+                {
+
+                    puertaRenderer.material.color = currentKeyColor;
+                }
+            }
         }
         
-    }
-    private IEnumerator CambiarColorPuertaTemporal(Renderer puertaRenderer, Color nuevoColor, float duracion)
-    {
-        Color colorOriginal = puertaRenderer.material.color;
-        puertaRenderer.material.color = nuevoColor;
-        yield return new WaitForSeconds(duracion);
-        puertaRenderer.material.color = colorOriginal;
-    }
-
-
-
-    private IEnumerator CambiarColorTemporal(float duracion)
-    {
         
-        yield return new WaitForSeconds(duracion);
-        playerRenderer.material.color = originalColor;
+            
+
+
     }
+
+
+
+
+    
+
 }
 

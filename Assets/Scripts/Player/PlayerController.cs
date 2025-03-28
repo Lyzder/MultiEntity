@@ -22,8 +22,9 @@ public class PlayerController : MonoBehaviour
     {
         Defecto = 0,
         Daño = 1,
-        Sigilo = 2,
-        Empujar = 3,
+        Cambio = 2,
+        Sigilo = 3,
+        Empujar = 4,
     }
     public Estados estadoJugador { get; private set; }
 
@@ -37,6 +38,7 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 4f;
     public float sprintMultiplier = 2f;
     public float sneakMultiplier = 0.65f;
+    public float pushMultiplier = 0.5f;
 
     // Input
     private InputSystem_Actions inputActions;
@@ -127,7 +129,9 @@ public class PlayerController : MonoBehaviour
             RotateSprite();
         }
 
-        if (isSprint)
+        if (estadoJugador == Estados.Empujar)
+            currentSpeed = moveSpeed * pushMultiplier;
+        else if (isSprint)
             currentSpeed = moveSpeed * sprintMultiplier;
         else if (isSneak)
             currentSpeed = moveSpeed * sneakMultiplier;
@@ -232,7 +236,8 @@ public class PlayerController : MonoBehaviour
 
     public void ObjecInRange(InteractableBase obj)
     {
-        objectsInRange.Add(obj);
+        if (objectsInRange.IndexOf(obj) < 0)
+            objectsInRange.Add(obj);
     }
 
     public void ObjectOutOfRange(InteractableBase obj)
@@ -250,6 +255,7 @@ public class PlayerController : MonoBehaviour
     private void StopPush()
     {
         pushingObj.transform.SetParent(null);
+        objectsInRange.Remove(pushingObj.GetComponent<InteractableBase>());
         pushingObj = null;
         estadoJugador = Estados.Defecto;
     }

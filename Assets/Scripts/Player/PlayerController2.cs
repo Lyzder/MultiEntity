@@ -5,7 +5,7 @@ using System.Collections;
 using UnityEngine.UI;
 
 
-public class PlayerController : MonoBehaviour
+public class PlayerController2 : MonoBehaviour
 {
     // Físicas y colisiones
     private Rigidbody rb;

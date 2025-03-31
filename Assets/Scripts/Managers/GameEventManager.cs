@@ -1,5 +1,9 @@
 using UnityEngine;
 
+
+/*
+ *  Clase para almacenar y controlar eventos y banderas para el flujo del juego. Las banderas pueden ser eventos que ocurran u objetos que se consigan
+ */
 [System.Flags]
 public enum GameFlags
 {
@@ -12,8 +16,9 @@ public enum GameFlags
 public class GameEventManager : MonoBehaviour
 {
     [SerializeField] Material highlightMaterial;
-    private Color originalGlowColor;
-    public Color highlightGlowColor = Color.yellow;
+    private static Color originalGlowColor;
+
+    public Color highlightGlowColor = new Color(128f, 122f, 0f);
 
     public static GameEventManager Instance { get; private set; }
     private GameFlags flags;
@@ -71,7 +76,6 @@ public class GameEventManager : MonoBehaviour
 
     private void SetHighlight(bool isHighlighted)
     {
-        // Change the glow color in the shader
         highlightMaterial.SetColor("_GlowColor", isHighlighted ? highlightGlowColor : originalGlowColor);
     }
 }

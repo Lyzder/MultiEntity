@@ -27,6 +27,8 @@ public class PlayerController : MonoBehaviour
         Empujar = 4,
     }
     public Estados estadoJugador { get; private set; }
+    public delegate void HighlightToggle(bool isHighlighted);
+    public static event HighlightToggle OnHighlightToggle;
 
     // Movement variables
     private Vector2 moveInput;
@@ -194,6 +196,8 @@ public class PlayerController : MonoBehaviour
             isSneak = false;
             isObserve = false;
         }
+        if (personaActiva == 2)
+            OnHighlightToggle?.Invoke(isObserve);
     }
 
     private void OnInteract(InputAction.CallbackContext context)
@@ -203,7 +207,8 @@ public class PlayerController : MonoBehaviour
         if (estadoJugador == Estados.Defecto)
         {
             obj = GetCloserObject();
-            obj.Interact(this);
+            if (obj != null)
+                obj.Interact(this);
         }
         else if (estadoJugador == Estados.Empujar)
         {
@@ -299,5 +304,11 @@ public class PlayerController : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    private void UpdateAnimator()
+    {
+        animator.SetInteger("PersonaActiva", personaActiva);
+        animator.SetBool("Habilidad", isSneak || isSprint || isObserve);
     }
 }

@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
     [Header("Movement speed")]
     public float moveSpeed = 4f;
     public float sprintMultiplier = 2f;
-    public float sneakMultiplier = 0.65f;
+    public float sneakMultiplier = 0.5f;
     public float pushMultiplier = 0.5f;
 
     // Input
@@ -53,6 +53,7 @@ public class PlayerController : MonoBehaviour
     // Efectos de sonido
     [Header("Efectos de sonido")]
     public AudioClip stepSfx;
+    public AudioClip stepSoftSfx;
 
     private void Awake()
     {
@@ -132,13 +133,23 @@ public class PlayerController : MonoBehaviour
         if (estadoJugador == Estados.Empujar)
             currentSpeed = moveSpeed * pushMultiplier;
         else if (isSprint)
+        {
             currentSpeed = moveSpeed * sprintMultiplier;
+            animator.SetBool("Habilidad", true);
+        }
         else if (isSneak)
+        {
             currentSpeed = moveSpeed * sneakMultiplier;
+            animator.SetBool("Habilidad", true);
+        }
         else
+        {
             currentSpeed = moveSpeed;
+            animator.SetBool("Habilidad", false);
+        }
 
         Vector3 desiredVelocity = moveDirection * currentSpeed;
+        animator.SetFloat("Velocidad", desiredVelocity.magnitude);
         desiredVelocity.y = rb.velocity.y; // Preserve vertical movement
 
         // Check if movement will result in a collision
@@ -209,7 +220,7 @@ public class PlayerController : MonoBehaviour
 
     private void RotateSprite()
     {
-        spriteRenderer.flipX = !lookLeft;
+        spriteRenderer.flipX = lookLeft;
         if (lookLeft)
         {
             frontalTrigger.center = new Vector3(-0.7f, 0f, -0.3f);
@@ -273,5 +284,20 @@ public class PlayerController : MonoBehaviour
             }
         }
         return closeObj;
+    }
+
+    public void PlaySound(int index)
+    {
+        switch (index)
+        {
+            case 0: // Reproduce paso
+                AudioManager.Instance.PlaySFX(stepSfx);
+                break;
+            case 1: // Reproduce paso suave
+                AudioManager.Instance.PlaySFX(stepSoftSfx);
+                break;
+            default:
+                break;
+        }
     }
 }

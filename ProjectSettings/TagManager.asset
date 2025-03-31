@@ -4,6 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - Llaves
+  - Puerta
+  - Nota1
+  - Nota2
   - NPC
   - Push
   - Interact

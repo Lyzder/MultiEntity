@@ -25,7 +25,7 @@ public class Mostrar_mensaje_notas : MonoBehaviour
     public void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") && mensaje != null)
-        {   Canva_del_mensaje.SetActive(true);
+        {   //Canva_del_mensaje.SetActive(true);
             mensaje.gameObject.SetActive(true);
         }
     }
@@ -35,7 +35,7 @@ public class Mostrar_mensaje_notas : MonoBehaviour
         if (other.CompareTag("Player") && mensaje != null)
         {
             mensaje.gameObject.SetActive(false);
-            Canva_del_mensaje.SetActive(false);
+           // Canva_del_mensaje.SetActive(false);
         }
     }
 }

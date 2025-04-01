@@ -196,6 +196,7 @@ public class PlayerController : MonoBehaviour
             isSneak = false;
             isObserve = false;
         }
+        UpdateAnimator();
         if (personaActiva == 2)
             OnHighlightToggle?.Invoke(isObserve);
     }

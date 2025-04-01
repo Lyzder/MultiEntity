@@ -8,6 +8,7 @@ public class DoorObject : InteractableBase
     [SerializeField] GameFlags eventoPuerta;
     private Animator animator;
     private Collider trigger;
+    public AudioClip openSfx;
 
     // Start is called before the first frame update
     void Awake()
@@ -50,6 +51,7 @@ public class DoorObject : InteractableBase
             GameEventManager.Instance.SetFlag(eventoPuerta);
             DeactivateTrigger();
             player.ObjectOutOfRange(this);
+            AudioManager.Instance.PlaySFX(openSfx);
         }
         else
         {

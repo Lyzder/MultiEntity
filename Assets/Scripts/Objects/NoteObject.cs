@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NoteObject : InteractableBase
 {
@@ -8,6 +9,7 @@ public class NoteObject : InteractableBase
     [SerializeField] Sprite mensaje;
     [SerializeField] Sprite mensajeSecreto;
     [SerializeField] GameObject canvas;
+    [SerializeField] Image image;
 
     // Start is called before the first frame update
     void Awake()
@@ -27,11 +29,21 @@ public class NoteObject : InteractableBase
         {
             // TODO leer como inteligente
             Debug.Log("Leer como inteligente");
+            image.sprite = mensajeSecreto;
         }
         else
         {
             // TODO leer normal
             Debug.Log("Leer la nota");
+            image.sprite = mensaje;
         }
+        image.SetNativeSize();
+        canvas.SetActive(true);
+        player.StartReading(this);
+    }
+
+    public void CloseNote()
+    {
+        canvas.SetActive(false);
     }
 }

@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
         Cambio = 2,
         Sigilo = 3,
         Empujar = 4,
+        Leer = 5,
     }
     public Estados estadoJugador { get; private set; }
     public delegate void HighlightToggle(bool isHighlighted);
@@ -51,6 +52,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] SpriteRenderer topSprite;
     private List<InteractableBase> objectsInRange;
     private GameObject pushingObj;
+    private NoteObject notaAbierta;
 
     // Efectos de sonido
     [Header("Efectos de sonido")]
@@ -79,8 +81,8 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         // Subscribe to input events
-        inputActions.Player.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
-        inputActions.Player.Move.canceled += ctx => moveInput = Vector2.zero;
+        inputActions.Player.Move.performed += OnMove;
+        inputActions.Player.Move.canceled += OnMove;
         inputActions.Player.Sprint.performed += OnSkill;
         inputActions.Player.Sprint.canceled += OnSkill;
         inputActions.Player.Interact.performed += OnInteract;
@@ -90,8 +92,8 @@ public class PlayerController : MonoBehaviour
     {
         // Unsubscribe to avoid leakages
         inputActions.Disable();
-        inputActions.Player.Move.performed -= ctx => moveInput = ctx.ReadValue<Vector2>();
-        inputActions.Player.Move.canceled -= ctx => moveInput = Vector2.zero;
+        inputActions.Player.Move.performed -= OnMove;
+        inputActions.Player.Move.canceled -= OnMove;
         inputActions.Player.Sprint.performed -= OnSkill;
         inputActions.Player.Sprint.canceled -= OnSkill;
         inputActions.Player.Interact.performed -= OnInteract;
@@ -166,6 +168,15 @@ public class PlayerController : MonoBehaviour
         rb.velocity = desiredVelocity;
     }
 
+    private void OnMove(InputAction.CallbackContext context)
+    {
+        if (context.performed && !(estadoJugador == Estados.Daño || estadoJugador == Estados.Leer || estadoJugador == Estados.Cambio))
+        {
+            moveInput = context.ReadValue<Vector2>();
+        }
+        else
+            moveInput = Vector2.zero;
+    }
 
     private void OnSkill(InputAction.CallbackContext context)
     {
@@ -214,6 +225,10 @@ public class PlayerController : MonoBehaviour
         else if (estadoJugador == Estados.Empujar)
         {
             StopPush();
+        }
+        else if (estadoJugador == Estados.Leer)
+        {
+            StopReading();
         }
     }
 
@@ -311,5 +326,24 @@ public class PlayerController : MonoBehaviour
     {
         animator.SetInteger("PersonaActiva", personaActiva);
         animator.SetBool("Habilidad", isSneak || isSprint || isObserve);
+    }
+
+    public void StartReading(NoteObject nota)
+    {
+        estadoJugador = Estados.Leer;
+        notaAbierta = nota;
+    }
+
+    private void StopReading()
+    {
+        if(estadoJugador == Estados.Leer)
+        {
+            estadoJugador = Estados.Defecto;
+        }
+        if (notaAbierta != null)
+        {
+            notaAbierta.CloseNote();
+            notaAbierta = null;
+        }
     }
 }

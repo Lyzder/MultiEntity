@@ -331,6 +331,7 @@ public class PlayerController : MonoBehaviour
     public void StartReading(NoteObject nota)
     {
         estadoJugador = Estados.Leer;
+        moveInput = Vector2.zero;
         notaAbierta = nota;
     }
 

@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Windows;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 public class PlayerController2 : MonoBehaviour
@@ -11,7 +12,7 @@ public class PlayerController2 : MonoBehaviour
     private Rigidbody rb;
     [Header("Colission")]
     [SerializeField] float rangeSweepCast;
-    [SerializeField] private Toggle ToggleNota1, ToggleNota2;
+    
 
     // Estado del jugador
     private bool isAlive;
@@ -23,8 +24,7 @@ public class PlayerController2 : MonoBehaviour
     [Header("Movement speed")]
     public float moveSpeed = 4f;
     public float sprintMultiplier = 2.1f;
-    private bool PlayerCercano_a_Nota1 = false;
-    private bool PlayerCercano_a_Nota2 = false;
+   
 
 
     // Input
@@ -33,9 +33,8 @@ public class PlayerController2 : MonoBehaviour
     private Color originalColor;
 
     private Color currentKeyColor;
-    private bool hasKey = false;
-    private bool tieneNota1 = false;
-    private bool tieneNota2 = false;
+    
+    
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -66,32 +65,33 @@ public class PlayerController2 : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        
         EnableControl();
         playerRenderer = GetComponent<Renderer>();
         originalColor = playerRenderer.material.color;
-        ToggleNota1.interactable = false;
-        ToggleNota2.interactable = false;
+       
     }
 
     // Update is called once per frame
     void Update()
     {
         Move();
-        if (Keyboard.current.eKey.wasPressedThisFrame && PlayerCercano_a_Nota1)
+        if (Keyboard.current.eKey.wasPressedThisFrame && ObjectManager.Instance.PlayerCercano_a_Nota1)
         {
-            tieneNota1 = true;
-            ToggleNota1.isOn = true;
+            ObjectManager.Instance.tieneNota1 = true;
+            ObjectManager.Instance.ToggleNota1.isOn = true;
             
 
         }
-        if (Keyboard.current.eKey.wasPressedThisFrame && PlayerCercano_a_Nota2)
+        if (Keyboard.current.eKey.wasPressedThisFrame && ObjectManager.Instance.PlayerCercano_a_Nota2)
         {
-            tieneNota2 = true;
-            ToggleNota2.isOn = true;
+            ObjectManager.Instance.tieneNota2 = true;
+            ObjectManager.Instance.ToggleNota2.isOn = true;
 
 
         }
-
+        originalColor = playerRenderer.material.color;
 
     }
 
@@ -149,19 +149,19 @@ public class PlayerController2 : MonoBehaviour
             {
                 currentKeyColor = llaveRenderer.material.color;
                 playerRenderer.material.color = currentKeyColor;
-                hasKey = true;
+                ObjectManager.Instance.hasKey = true;
             }
         }
 
         if (other.gameObject.CompareTag("Nota1"))
         {
             //Debug.Log("Entraste");
-            PlayerCercano_a_Nota1 = true;
+            ObjectManager.Instance.PlayerCercano_a_Nota1 = true;
         }
         if (other.gameObject.CompareTag("Nota2"))
         {
-            Debug.Log("Entraste");
-            PlayerCercano_a_Nota2 = true;
+            
+            ObjectManager.Instance.PlayerCercano_a_Nota2 = true;
         }
 
     }
@@ -171,12 +171,12 @@ public class PlayerController2 : MonoBehaviour
         if (other.gameObject.CompareTag("Nota1"))
         {
             //Debug.Log("Saliste");
-            PlayerCercano_a_Nota1 = false;
+            ObjectManager.Instance.PlayerCercano_a_Nota1 = false;
         }
         if (other.gameObject.CompareTag("Nota2"))
         {
-            Debug.Log("Saliste");
-            PlayerCercano_a_Nota2 = false;
+            //Debug.Log("Saliste");
+            ObjectManager.Instance.PlayerCercano_a_Nota2 = false;
         }
 
     }
@@ -185,19 +185,33 @@ public class PlayerController2 : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Puerta"))
         {
-            if (hasKey && tieneNota1 && tieneNota2)
+           
+
+            if (ObjectManager.Instance.hasKey && ObjectManager.Instance.tieneNota1 && ObjectManager.Instance.tieneNota2)
             {
                 Renderer puertaRenderer = collision.gameObject.GetComponent<Renderer>();
                 if (puertaRenderer != null)
-                {
+                { 
+                    SceneManager.LoadScene(6);
 
                     puertaRenderer.material.color = currentKeyColor;
                 }
             }
         }
+
+        if(collision.gameObject.CompareTag("Puerta2"))
+        {
+            Renderer puertaRenderer = collision.gameObject.GetComponent<Renderer>();
+            if (ObjectManager.Instance.hasKey && ObjectManager.Instance.tieneNota1 && ObjectManager.Instance.tieneNota2)
+            {
+                playerRenderer.material.color = originalColor;
+                puertaRenderer.material.color = originalColor;
+            }
+        }
         
-        
-            
+
+
+
 
 
     }

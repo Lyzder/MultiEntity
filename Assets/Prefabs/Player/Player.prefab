@@ -296,9 +296,9 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 943413754, guid: 6f2b26c0bca94de418469bd3aa177b40, type: 3}
+  m_Sprite: {fileID: 1301483491, guid: 6f2b26c0bca94de418469bd3aa177b40, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 1
+  m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}
@@ -409,9 +409,10 @@ MonoBehaviour:
   moveSpeed: 4
   sprintMultiplier: 2
   sneakMultiplier: 0.65
+  pushMultiplier: 0.5
   frontalTrigger: {fileID: 7350616624969610461}
   topSprite: {fileID: 433408425911589764}
-  stepSfx: {fileID: 0}
+  stepSfx: {fileID: 8300000, guid: 8b7828c1493c54b41b14032aa5b2aff5, type: 3}
 --- !u!95 &8885184728218818992
 Animator:
   serializedVersion: 5

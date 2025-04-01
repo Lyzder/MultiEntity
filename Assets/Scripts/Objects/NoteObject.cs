@@ -5,9 +5,12 @@ using UnityEngine;
 public class NoteObject : InteractableBase
 {
     [SerializeField] bool tieneSecreto;
+    [SerializeField] Sprite mensaje;
+    [SerializeField] Sprite mensajeSecreto;
+    [SerializeField] GameObject canvas;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         
     }

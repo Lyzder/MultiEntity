@@ -18,7 +18,7 @@ public class GameEventManager : MonoBehaviour
     [SerializeField] Material highlightMaterial;
     private static Color originalGlowColor;
 
-    public Color highlightGlowColor = new Color(128f, 122f, 0f);
+    public Color highlightGlowColor = new(128f, 122f, 0f);
 
     public static GameEventManager Instance { get; private set; }
     private GameFlags flags;

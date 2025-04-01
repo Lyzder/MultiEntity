@@ -11,6 +11,9 @@ TagManager:
   - NPC
   - Push
   - Interact
+  - Puerta2
+  - Pista1
+  - Cubo_a_Superar1
   layers:
   - Default
   - TransparentFX

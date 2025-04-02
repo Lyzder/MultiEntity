@@ -59,8 +59,21 @@ public class PlayerController : MonoBehaviour
     public AudioClip stepSfx;
     public AudioClip stepSoftSfx;
 
+    // Se crea una instancia para que se pueda mantener entre cambios de escenas
+    private static PlayerController instance;
+
     private void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         rb = GetComponent<Rigidbody>();
         cldr = GetComponent<BoxCollider>();

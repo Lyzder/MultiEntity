@@ -33,9 +33,14 @@ public class MenuManagement : MonoBehaviour
         GameManager.Instance.OpenCreditsMenu();
     }
 
-    public  void NextLevel()
+    public void NextLevel()
     {
         GameManager.Instance.LoadNextScene();
+    }
+
+    public void GoToLevel(string nivel)
+    {
+        GameManager.Instance.LoadSceneByName(nivel);
     }
 
 }

@@ -413,6 +413,7 @@ MonoBehaviour:
   frontalTrigger: {fileID: 7350616624969610461}
   topSprite: {fileID: 433408425911589764}
   stepSfx: {fileID: 8300000, guid: 8b7828c1493c54b41b14032aa5b2aff5, type: 3}
+  stepSoftSfx: {fileID: 8300000, guid: da06c7f80d9cca144b40892c562b5d52, type: 3}
 --- !u!95 &8885184728218818992
 Animator:
   serializedVersion: 5

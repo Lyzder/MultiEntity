@@ -10,7 +10,8 @@ public enum GameFlags
     None = 0,
     HasNote1Room1 = 1 << 0,  // 1
     HasNote2Room1 = 1 << 1,  // 2
-    HasKeyRoom1 = 1 << 1,   // 4
+    HasKeyRoom1 = 1 << 2,   // 4
+    OpenDoorRoom1 = 1 << 3,  // 8
 }
 
 public class GameEventManager : MonoBehaviour

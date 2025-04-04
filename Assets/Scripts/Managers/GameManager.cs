@@ -12,7 +12,6 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(this.gameObject);
-            Debug.Log("Game manager se intancio");
         }
         else
         {
@@ -61,6 +60,13 @@ public class GameManager : MonoBehaviour
     public void OpenCreditsMenu()
     {
         SceneManager.LoadScene("CreditsMenu", LoadSceneMode.Additive);
+    }
+
+    public void TransitionPoint(string sceneName, Vector3 spawnPosition, GameObject player)
+    {
+
+        SceneManager.LoadScene(sceneName);
+        player.transform.position = spawnPosition;
     }
 }
 /*Forma de utilizar funciones en otros scripts, llamar escenas por nombres

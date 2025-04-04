@@ -72,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_Sprite: {fileID: 1978762490, guid: 99b91fd3062be0545945ac1013bb4502, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -295,7 +295,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 1301483491, guid: 6f2b26c0bca94de418469bd3aa177b40, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -414,6 +414,8 @@ MonoBehaviour:
   topSprite: {fileID: 433408425911589764}
   stepSfx: {fileID: 8300000, guid: 8b7828c1493c54b41b14032aa5b2aff5, type: 3}
   stepSoftSfx: {fileID: 8300000, guid: da06c7f80d9cca144b40892c562b5d52, type: 3}
+  hitSfx: {fileID: 0}
+  pushSfx: {fileID: 8300000, guid: 918a881bf5a34a344b2eca8bd6ea4092, type: 3}
 --- !u!95 &8885184728218818992
 Animator:
   serializedVersion: 5

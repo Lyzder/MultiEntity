@@ -18,7 +18,10 @@ public class OptionMenu : MonoBehaviour
     void Start()
     {
         SyncSlidersWithMixer(); // 👈 muy importante: sincroniza sin disparar eventos
-
+                                // ✅ Restaurar estado del muteToggle sin disparar el evento
+        bool wasMuted = PlayerPrefs.GetInt("MuteToggle", 0) == 1;
+        muteToggle.SetIsOnWithoutNotify(wasMuted);
+        OnMuteToggleChanged(wasMuted); // Aplicar lógica de mute manualment
 
         sliderMusic.onValueChanged.AddListener(UpdateMusicVolume);
         sliderSFX.onValueChanged.AddListener(UpdateSFXVolume);
@@ -46,7 +49,8 @@ public class OptionMenu : MonoBehaviour
     }
 
     public void OnMuteToggleChanged(bool isMuted)
-    {
+         
+    {PlayerPrefs.SetInt("MuteToggle", isMuted ? 1 : 0); // ✅ Guardar como 1 o 0
         if (isMuted)
         {
             // Guardamos los valores actuales antes de silenciar

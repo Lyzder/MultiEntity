@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using static UnityEngine.Rendering.DebugUI;
@@ -17,17 +17,34 @@ public class OptionMenu : MonoBehaviour
     }
     void Start()
     {
-        previousVolumeMusic = sliderMusic.value;
-        previousVolumeSFX = sliderSFX.value;
+        SyncSlidersWithMixer(); // 👈 muy importante: sincroniza sin disparar eventos
+
+
         sliderMusic.onValueChanged.AddListener(UpdateMusicVolume);
         sliderSFX.onValueChanged.AddListener(UpdateSFXVolume);
         sliderGeneral.onValueChanged.AddListener(UpdateGeneralVolume);
         muteToggle.onValueChanged.AddListener(OnMuteToggleChanged);
-
-        //AudioManager.Instance.PlayMusic(AudioManager.Instance.GeneralMusic);
-        //AudioManager.Instance.PlaySFX(AudioManager.Instance.Collision_Bala_and_Obstacle_Sound);
-
     }
+    void SyncSlidersWithMixer()
+    {
+        float musicVol, sfxVol, masterVol;
+
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.Master.GetFloat("Musica", out musicVol);
+            AudioManager.Instance.Master.GetFloat("SFX", out sfxVol);
+            AudioManager.Instance.Master.GetFloat("Master", out masterVol);
+
+            sliderMusic.SetValueWithoutNotify(musicVol);
+            sliderSFX.SetValueWithoutNotify(sfxVol);
+            sliderGeneral.SetValueWithoutNotify(masterVol);
+
+            // También actualizamos los valores "previos" por si mute está activo
+            previousVolumeMusic = musicVol;
+            previousVolumeSFX = sfxVol;
+        }
+    }
+
     public void OnMuteToggleChanged(bool isMuted)
     {
         if (isMuted)
@@ -44,7 +61,7 @@ public class OptionMenu : MonoBehaviour
         }
         else
         {
-            // Restauramos vol�menes anteriores
+            // Restauramos volúmenes anteriores
             AudioManager.Instance.MusicVolumeControl(previousVolumeMusic);
             AudioManager.Instance.SFXVolumeControl(previousVolumeSFX);
             sliderMusic.value = previousVolumeMusic;
@@ -58,15 +75,17 @@ public class OptionMenu : MonoBehaviour
         if (sliderGeneral != null)
         {
             AudioManager.Instance.GeneralVolumeControl(value);
+            PlayerPrefs.SetFloat("GeneralVolume", value);
         }
     }
-    //Este metodo se encargan de Actualizar el volumen de la m�sica
+    //Este metodo se encargan de Actualizar el volumen de la música
     public void UpdateMusicVolume(float value)
     {
         
         if (sliderMusic != null)
         {
-            AudioManager.Instance.MusicVolumeControl(value); // Actualizamos el volumen de la m�sica
+            AudioManager.Instance.MusicVolumeControl(value); // Actualizamos el volumen de la música
+            PlayerPrefs.SetFloat("MusicVolume", value);
         }
     }
 
@@ -76,6 +95,8 @@ public class OptionMenu : MonoBehaviour
         if (sliderSFX != null)
         {
             AudioManager.Instance.SFXVolumeControl(value);
+            PlayerPrefs.SetFloat("SFXVolume", value);
+
         }
     }
  
@@ -85,7 +106,7 @@ public class OptionMenu : MonoBehaviour
   
     public void clicSound()
     {
-        //Reemplzar la siguiente linea de c�digo la palabra GeneralMusic por la cancion que se desea reproducir
+        //Reemplzar la siguiente linea de código la palabra GeneralMusic por la cancion que se desea reproducir
         //AudioManager.Instance.PlayMusic(AudioManager.Instance.GeneralMusic);
     }
 

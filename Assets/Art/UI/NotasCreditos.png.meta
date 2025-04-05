@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 8889313dd82be2244b87673490295c84
+guid: e82f2e9afb098ef4b9b7dff8e80f11aa
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -93,17 +93,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Credits-removebg-preview_0
+      name: NotasCreditos_0
       rect:
         serializedVersion: 2
-        x: 73
-        y: 318
-        width: 223
-        height: 129
+        x: 27
+        y: 413
+        width: 362
+        height: 349
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,20 +124,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a20e01b7032adb64cb9fae0f04d15fba
-      internalID: 1425086750
+      spriteID: da3e7e30f5670074bb469fbc81f5f984
+      internalID: -455105031
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Credits-removebg-preview_1
+      name: NotasCreditos_1
       rect:
         serializedVersion: 2
-        x: 72
-        y: 47
+        x: 494
+        y: 400
         width: 362
-        height: 259
+        height: 364
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -132,8 +145,92 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d566b23ab5b4b144bb023964d598340b
-      internalID: -730176112
+      spriteID: 01bf5cc4182bd554d915b0df1f15b605
+      internalID: 1323127537
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NotasCreditos_2
+      rect:
+        serializedVersion: 2
+        x: 964
+        y: 409
+        width: 355
+        height: 347
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 46e81e38683d96b46b625f5ed62b0e20
+      internalID: -774777535
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NotasCreditos_3
+      rect:
+        serializedVersion: 2
+        x: 148
+        y: 388
+        width: 10
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d83859ad0d3d2854094f03e19083672f
+      internalID: -562030792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NotasCreditos_4
+      rect:
+        serializedVersion: 2
+        x: 246
+        y: 39
+        width: 357
+        height: 353
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 52381bd4430f71e4bb35b6a19a320f7a
+      internalID: 423364555
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NotasCreditos_5
+      rect:
+        serializedVersion: 2
+        x: 782
+        y: 30
+        width: 351
+        height: 351
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 85951d54086fe4346be92ab213ba055f
+      internalID: -426483865
       vertices: []
       indices: 
       edges: []
@@ -141,16 +238,20 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    spriteID: 9f05aaf7eee4ea244996e35c6c09580c
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Credits-removebg-preview_0: 1425086750
-      Credits-removebg-preview_1: -730176112
+      NotasCreditos_0: -455105031
+      NotasCreditos_1: 1323127537
+      NotasCreditos_2: -774777535
+      NotasCreditos_3: -562030792
+      NotasCreditos_4: 423364555
+      NotasCreditos_5: -426483865
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

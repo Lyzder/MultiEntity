@@ -2917,6 +2917,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6636661267768932658}
   - component: {fileID: 1589688033866158219}
+  - component: {fileID: 8989497905927095481}
   m_Layer: 0
   m_Name: Numberpad
   m_TagString: Interact
@@ -2958,6 +2959,27 @@ MonoBehaviour:
   flag: 0
   code: 1234
   codeLength: 4
+--- !u!65 &8989497905927095481
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7087367358886047047}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 0.4}
+  m_Center: {x: 0, y: 0, z: -0.1}
 --- !u!1 &8047716368840104153
 GameObject:
   m_ObjectHideFlags: 0

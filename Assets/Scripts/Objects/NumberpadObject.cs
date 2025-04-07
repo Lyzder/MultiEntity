@@ -17,6 +17,8 @@ public class NumberpadObject : InteractableBase
     void Awake()
     {
         player = null;
+        code =  string.Empty;
+        text.text = code;
     }
 
     // Update is called once per frame
@@ -44,7 +46,7 @@ public class NumberpadObject : InteractableBase
     {
         if (inputCode.Length > 0)
         {
-            inputCode.Remove(inputCode.Length - 1);
+            inputCode = inputCode.Remove(inputCode.Length - 1);
             UpdateText();
         }
     }

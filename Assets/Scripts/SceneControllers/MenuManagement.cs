@@ -2,8 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class MenuManagement : MonoBehaviour
-{  
-    
+{
+
     void Start()
     {
 
@@ -18,15 +18,15 @@ public class MenuManagement : MonoBehaviour
         //AudioManager.Instance.PlayMusic(AudioManager.Instance.GeneralMusic);
     }
 
-    public void OpenOptions() 
+    public void OpenOptions()
     {
         GameManager.Instance.OpenOptionsMenu();
     }
-  
 
-  
 
-    
+
+
+
 
     public void OpenCredits()
     {
@@ -43,4 +43,13 @@ public class MenuManagement : MonoBehaviour
         GameManager.Instance.LoadSceneByName(nivel);
     }
 
+    public void ExitGame()
+    {
+        Debug.Log("Saliendo del juego...");
+        Application.Quit();
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+
+    }
 }

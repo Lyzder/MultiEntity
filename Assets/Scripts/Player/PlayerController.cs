@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDamageable
 {
     // Control de sprites
     private SpriteRenderer spriteRenderer;
@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
         Sigilo = 3,
         Empujar = 4,
         Leer = 5,
+        Ataque = 6,
     }
     public Estados estadoJugador { get; private set; }
     public delegate void HighlightToggle(bool isHighlighted);
@@ -52,15 +53,19 @@ public class PlayerController : MonoBehaviour
     [Header("Interaccion")]
     [SerializeField] BoxCollider frontalTrigger;
     [SerializeField] SpriteRenderer topSprite;
+    [SerializeField] GameObject atkHitbox;
+    [SerializeField] float iFrames;
     private List<InteractableBase> objectsInRange;
     private GameObject pushingObj;
-    private NoteObject notaAbierta;
+    private InteractableBase notaAbierta;
+    private bool invulnerable;
+    private float iFramesTimer;
 
     // Efectos de sonido
     [Header("Efectos de sonido")]
     public AudioClip stepSfx;
     public AudioClip stepSoftSfx;
-    public AudioClip hitSfx;
+    public AudioClip hurtSfx;
     public AudioClip pushSfx;
 
     // Se crea una instancia para que se pueda mantener entre cambios de escenas
@@ -86,6 +91,7 @@ public class PlayerController : MonoBehaviour
         health = 3;
         speed = 0;
         personaActiva = 0;
+        iFramesTimer = 0;
         isSprint = false;
         isSneak = false;
         isObserve = false;
@@ -106,6 +112,8 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.Sprint.performed += OnSkill;
         inputActions.Player.Sprint.canceled += OnSkill;
         inputActions.Player.Interact.performed += OnInteract;
+        inputActions.Player.Attack.performed += OnAttack;
+        TranistionNotifier.OnAttackExit += FinishAttack;
     }
 
     private void OnDisable()
@@ -117,6 +125,8 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.Sprint.performed -= OnSkill;
         inputActions.Player.Sprint.canceled -= OnSkill;
         inputActions.Player.Interact.performed -= OnInteract;
+        inputActions.Player.Attack.performed -= OnAttack;
+        TranistionNotifier.OnAttackExit -= FinishAttack;
     }
 
     // Start is called before the first frame update
@@ -255,6 +265,10 @@ public class PlayerController : MonoBehaviour
 
     public void ChangePersona(int personaId)
     {
+        if (estadoJugador == Estados.Daño || estadoJugador == Estados.Ataque)
+            return;
+        if (estadoJugador == Estados.Empujar)
+            StopPush();
         Debug.Log("Cambio");
         personaActiva = (short)personaId;
         animator.SetInteger("PersonaActiva", personaId);
@@ -350,7 +364,7 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("Habilidad", isSneak || isSprint || isObserve);
     }
 
-    public void StartReading(NoteObject nota)
+    public void StartReading(InteractableBase nota)
     {
         estadoJugador = Estados.Leer;
         moveInput = Vector2.zero;
@@ -365,22 +379,8 @@ public class PlayerController : MonoBehaviour
         }
         if (notaAbierta != null)
         {
-            notaAbierta.CloseNote();
+            notaAbierta.ClosePanel();
             notaAbierta = null;
-        }
-    }
-
-    public void IsHit()
-    {
-        health -= 1;
-        estadoJugador = Estados.Daño;
-        if (health == 0)
-        {
-            // TODO jugador murio
-        }
-        else
-        {
-            // TODO jugador sigue vivo
         }
     }
 
@@ -398,5 +398,58 @@ public class PlayerController : MonoBehaviour
                 yield return new WaitForFixedUpdate();
             }
         }
+    }
+
+    private void OnAttack(InputAction.CallbackContext context)
+    {
+        if (personaActiva != 1 || estadoJugador == Estados.Ataque || estadoJugador == Estados.Leer || estadoJugador == Estados.Empujar || estadoJugador == Estados.Daño)
+            return;
+        Debug.Log("Ataque");
+        estadoJugador = Estados.Ataque;
+        animator.SetTrigger("Atacar");
+        atkHitbox.SetActive(true);
+    }
+
+    private void FinishAttack()
+    {
+        animator.ResetTrigger("Atacar");
+        estadoJugador = Estados.Defecto;
+        atkHitbox.SetActive(false);
+    }
+
+    public void TakeDamage()
+    {
+        if (invulnerable)
+            return;
+        health -= 1;
+        estadoJugador = Estados.Daño;
+        animator.ResetTrigger("Daño");
+        animator.SetTrigger("Daño");
+        if (health == 0)
+        {
+            // TODO jugador murio
+        }
+        else
+        {
+            // TODO jugador sigue vivo
+            invulnerable = true;
+            StartCoroutine(InvulnerableTimer());
+        }
+    }
+
+    public bool IsInvulnerable()
+    {
+        return invulnerable;
+    }
+
+    private System.Collections.IEnumerator InvulnerableTimer()
+    {
+        iFramesTimer = 0;
+        while (iFramesTimer < iFrames)
+        {
+            iFramesTimer += Time.deltaTime;
+            yield return null;
+        }
+        invulnerable = false;
     }
 }

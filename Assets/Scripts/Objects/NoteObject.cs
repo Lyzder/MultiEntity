@@ -37,12 +37,17 @@ public class NoteObject : InteractableBase
             Debug.Log("Leer la nota");
             image.sprite = mensaje;
         }
-        image.SetNativeSize();
-        canvas.SetActive(true);
+        OpenPanel();
         player.StartReading(this);
     }
 
-    public void CloseNote()
+    public override void OpenPanel()
+    {
+        image.SetNativeSize();
+        canvas.SetActive(true);
+    }
+
+    public override void ClosePanel()
     {
         canvas.SetActive(false);
     }

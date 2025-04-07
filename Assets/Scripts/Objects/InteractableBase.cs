@@ -17,11 +17,21 @@ public class InteractableBase : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public virtual void Interact(PlayerController player)
     {
         Debug.Log("Interactuado");
+    }
+
+    public virtual void OpenPanel()
+    {
+
+    }
+
+    public virtual void ClosePanel()
+    {
+
     }
 }

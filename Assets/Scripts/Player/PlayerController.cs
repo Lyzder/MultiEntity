@@ -265,6 +265,10 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public void ChangePersona(int personaId)
     {
+        if (estadoJugador == Estados.Daño || estadoJugador == Estados.Ataque)
+            return;
+        if (estadoJugador == Estados.Empujar)
+            StopPush();
         Debug.Log("Cambio");
         personaActiva = (short)personaId;
         animator.SetInteger("PersonaActiva", personaId);
@@ -398,7 +402,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private void OnAttack(InputAction.CallbackContext context)
     {
-        if (personaActiva != 1 || estadoJugador == Estados.Ataque)
+        if (personaActiva != 1 || estadoJugador == Estados.Ataque || estadoJugador == Estados.Leer || estadoJugador == Estados.Empujar || estadoJugador == Estados.Daño)
             return;
         Debug.Log("Ataque");
         estadoJugador = Estados.Ataque;

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e82f2e9afb098ef4b9b7dff8e80f11aa
+guid: c18b646acbd829648bbc586806954765
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -110,106 +110,169 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: NotasCreditos_0
+      name: WalkLogic_0
       rect:
         serializedVersion: 2
-        x: 27
-        y: 413
-        width: 362
-        height: 349
+        x: 0
+        y: 0
+        width: 712
+        height: 712
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: da3e7e30f5670074bb469fbc81f5f984
-      internalID: -455105031
+      spriteID: f6bea7de2a818954a9762d391945ae22
+      internalID: 981272250
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NotasCreditos_1
+      name: WalkLogic_1
       rect:
         serializedVersion: 2
-        x: 494
-        y: 400
-        width: 362
-        height: 364
+        x: 712
+        y: 0
+        width: 712
+        height: 712
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 01bf5cc4182bd554d915b0df1f15b605
-      internalID: 1323127537
+      spriteID: 499778da6fe5b7c4aa210f632d016839
+      internalID: -1605774798
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NotasCreditos_2
+      name: WalkLogic_2
       rect:
         serializedVersion: 2
-        x: 964
-        y: 409
-        width: 355
-        height: 347
+        x: 1424
+        y: 0
+        width: 712
+        height: 712
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 46e81e38683d96b46b625f5ed62b0e20
-      internalID: -774777535
+      spriteID: e7f83e4b4fec23944a3b00ec9bebe5f9
+      internalID: 1957042895
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NotasCreditos_4
+      name: WalkLogic_3
       rect:
         serializedVersion: 2
-        x: 246
-        y: 39
-        width: 357
-        height: 353
+        x: 2136
+        y: 0
+        width: 712
+        height: 712
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 52381bd4430f71e4bb35b6a19a320f7a
-      internalID: 423364555
+      spriteID: 5bbe42bbbc0bf41419a098313d1b0e84
+      internalID: 514172692
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NotasCreditos_5
+      name: WalkLogic_4
       rect:
         serializedVersion: 2
-        x: 782
-        y: 30
-        width: 351
-        height: 351
+        x: 2848
+        y: 0
+        width: 712
+        height: 712
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 85951d54086fe4346be92ab213ba055f
-      internalID: -426483865
+      spriteID: 9d03f373b754ce64c8baad897f94cdd5
+      internalID: -1782425451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WalkLogic_5
+      rect:
+        serializedVersion: 2
+        x: 3560
+        y: 0
+        width: 712
+        height: 712
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cb85261c39ac9534099fe8fe36db433a
+      internalID: 1206571588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WalkLogic_6
+      rect:
+        serializedVersion: 2
+        x: 4272
+        y: 0
+        width: 712
+        height: 712
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f0f577e6511336549b9d54b24bb71e2a
+      internalID: -118799217
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WalkLogic_7
+      rect:
+        serializedVersion: 2
+        x: 4984
+        y: 0
+        width: 712
+        height: 712
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7d1b53cfb96d8e945b738728aadfec23
+      internalID: -263142165
       vertices: []
       indices: 
       edges: []
@@ -217,7 +280,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 9f05aaf7eee4ea244996e35c6c09580c
+    spriteID: 5d573eaf98bbeee4b921876718ed620d
     internalID: 0
     vertices: []
     indices: 
@@ -225,12 +288,14 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      NotasCreditos_0: -455105031
-      NotasCreditos_1: 1323127537
-      NotasCreditos_2: -774777535
-      NotasCreditos_3: -562030792
-      NotasCreditos_4: 423364555
-      NotasCreditos_5: -426483865
+      WalkLogic_0: 981272250
+      WalkLogic_1: -1605774798
+      WalkLogic_2: 1957042895
+      WalkLogic_3: 514172692
+      WalkLogic_4: -1782425451
+      WalkLogic_5: 1206571588
+      WalkLogic_6: -118799217
+      WalkLogic_7: -263142165
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

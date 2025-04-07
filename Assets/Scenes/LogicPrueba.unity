@@ -409,6 +409,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Silla_1
       objectReference: {fileID: 0}
+    - target: {fileID: 6129026047361395476, guid: 4713e0f1678236e46907bfcad10aafe4,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7395257569587179363, guid: 4713e0f1678236e46907bfcad10aafe4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1556,6 +1561,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Silla_1 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6129026047361395476, guid: 4713e0f1678236e46907bfcad10aafe4,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7395257569587179363, guid: 4713e0f1678236e46907bfcad10aafe4,
         type: 3}
@@ -2774,6 +2784,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 679265417077098429, guid: b34ca35a0337d5a46a10d76bd9e5c079,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4210967901230721756, guid: b34ca35a0337d5a46a10d76bd9e5c079,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5057096129186866597, guid: b34ca35a0337d5a46a10d76bd9e5c079,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3110,6 +3130,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Silla_1 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 6129026047361395476, guid: 4713e0f1678236e46907bfcad10aafe4,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7395257569587179363, guid: 4713e0f1678236e46907bfcad10aafe4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3236,7 +3261,7 @@ PrefabInstance:
     - target: {fileID: 8311454192933567822, guid: e2c981c6d63ad12489ca4ffc283ac078,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

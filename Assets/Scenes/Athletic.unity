@@ -1714,6 +1714,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Nota Hoja Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 3471051586724330870, guid: e3ac0a80494ba0e499a6d17bcd6975c4,
+        type: 3}
+      propertyPath: mensaje
+      value: 
+      objectReference: {fileID: 21300000, guid: 505d4a5333d1b804e95a9486771346f1,
+        type: 3}
+    - target: {fileID: 3471051586724330870, guid: e3ac0a80494ba0e499a6d17bcd6975c4,
+        type: 3}
+      propertyPath: mensajeSecreto
+      value: 
+      objectReference: {fileID: 21300000, guid: 505d4a5333d1b804e95a9486771346f1,
+        type: 3}
     - target: {fileID: 5641492788027382756, guid: e3ac0a80494ba0e499a6d17bcd6975c4,
         type: 3}
       propertyPath: m_LocalScale.x

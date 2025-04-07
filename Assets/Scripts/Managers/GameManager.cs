@@ -29,10 +29,7 @@ public class GameManager : MonoBehaviour
     SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    public void RestartGame()
-    {
-        SceneManager.LoadScene("Nivel1");
-    }
+   
 
     // Carga la siguiente escena por index
     public void LoadNextScene()
@@ -73,6 +70,7 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(sceneName);
         player.transform.position = spawnPosition;
     }
+
 }
 /*Forma de utilizar funciones en otros scripts, llamar escenas por nombres
 GameManager.instance.LoadSceneByName("Menu") */

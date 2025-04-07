@@ -62,6 +62,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     private InteractableBase notaAbierta;
     private bool invulnerable;
     private float iFramesTimer;
+    public Vector3 spanwPoint { get; private set; }
 
     // Efectos de sonido
     [Header("Efectos de sonido")]
@@ -455,5 +456,10 @@ public class PlayerController : MonoBehaviour, IDamageable
             yield return null;
         }
         invulnerable = false;
+    }
+
+    public void SetSpawnPoint(Vector3 spawnPoint)
+    {
+        this.spanwPoint = spawnPoint;
     }
 }

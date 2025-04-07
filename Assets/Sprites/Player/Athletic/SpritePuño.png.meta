@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c18b646acbd829648bbc586806954765
+guid: 0e561736d575534429c59f3b20f9c77f
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 393
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -69,7 +69,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 8192
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -110,7 +110,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: WalkLogic_0
+      name: "SpritePu\xF1o_0"
       rect:
         serializedVersion: 2
         x: 0
@@ -124,14 +124,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f6bea7de2a818954a9762d391945ae22
-      internalID: 981272250
+      spriteID: 3c4242480162c1d4a92589502119385c
+      internalID: 704835919
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WalkLogic_1
+      name: "SpritePu\xF1o_1"
       rect:
         serializedVersion: 2
         x: 712
@@ -145,14 +145,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 499778da6fe5b7c4aa210f632d016839
-      internalID: -1605774798
+      spriteID: 46bcbd5f171f33346aa93bf0499f5635
+      internalID: 443649615
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WalkLogic_2
+      name: "SpritePu\xF1o_2"
       rect:
         serializedVersion: 2
         x: 1424
@@ -166,14 +166,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e7f83e4b4fec23944a3b00ec9bebe5f9
-      internalID: 1957042895
+      spriteID: d9014acc9f19c314187b6aef4da9b50b
+      internalID: 1471907417
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WalkLogic_3
+      name: "SpritePu\xF1o_3"
       rect:
         serializedVersion: 2
         x: 2136
@@ -187,14 +187,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5bbe42bbbc0bf41419a098313d1b0e84
-      internalID: 514172692
+      spriteID: d87ed9cc5bd95f841a9495184ccc124b
+      internalID: -486276307
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WalkLogic_4
+      name: "SpritePu\xF1o_4"
       rect:
         serializedVersion: 2
         x: 2848
@@ -208,14 +208,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9d03f373b754ce64c8baad897f94cdd5
-      internalID: -1782425451
+      spriteID: cac0c75210b5fcc4aaf4fc0697e8aea7
+      internalID: -310272786
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WalkLogic_5
+      name: "SpritePu\xF1o_5"
       rect:
         serializedVersion: 2
         x: 3560
@@ -229,14 +229,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cb85261c39ac9534099fe8fe36db433a
-      internalID: 1206571588
+      spriteID: 72dd85a05e928854db7ba111b69b4479
+      internalID: -1014298988
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WalkLogic_6
+      name: "SpritePu\xF1o_6"
       rect:
         serializedVersion: 2
         x: 4272
@@ -250,14 +250,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f0f577e6511336549b9d54b24bb71e2a
-      internalID: -118799217
+      spriteID: ea2ddbef3792d414588a0af485a5ee48
+      internalID: 581090892
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WalkLogic_7
+      name: "SpritePu\xF1o_7"
       rect:
         serializedVersion: 2
         x: 4984
@@ -271,8 +271,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7d1b53cfb96d8e945b738728aadfec23
-      internalID: -263142165
+      spriteID: 8e7b585109c0faa46a14e892afc21cdd
+      internalID: -1079257156
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "SpritePu\xF1o_8"
+      rect:
+        serializedVersion: 2
+        x: 5696
+        y: 0
+        width: 712
+        height: 712
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 87940c6bc31331d4fa38fd3ea5159aed
+      internalID: -35981851
       vertices: []
       indices: 
       edges: []
@@ -280,7 +301,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 5d573eaf98bbeee4b921876718ed620d
+    spriteID: 1c664f834b73fa747af25e10bfce9153
     internalID: 0
     vertices: []
     indices: 
@@ -288,14 +309,15 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      WalkLogic_0: 981272250
-      WalkLogic_1: -1605774798
-      WalkLogic_2: 1957042895
-      WalkLogic_3: 514172692
-      WalkLogic_4: -1782425451
-      WalkLogic_5: 1206571588
-      WalkLogic_6: -118799217
-      WalkLogic_7: -263142165
+      "SpritePu\xF1o_0": 704835919
+      "SpritePu\xF1o_1": 443649615
+      "SpritePu\xF1o_2": 1471907417
+      "SpritePu\xF1o_3": -486276307
+      "SpritePu\xF1o_4": -310272786
+      "SpritePu\xF1o_5": -1014298988
+      "SpritePu\xF1o_6": 581090892
+      "SpritePu\xF1o_7": -1079257156
+      "SpritePu\xF1o_8": -35981851
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

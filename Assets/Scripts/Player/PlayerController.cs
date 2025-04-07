@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] float iFrames;
     private List<InteractableBase> objectsInRange;
     private GameObject pushingObj;
-    private NoteObject notaAbierta;
+    private InteractableBase notaAbierta;
     private bool invulnerable;
     private float iFramesTimer;
 
@@ -360,7 +360,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         animator.SetBool("Habilidad", isSneak || isSprint || isObserve);
     }
 
-    public void StartReading(NoteObject nota)
+    public void StartReading(InteractableBase nota)
     {
         estadoJugador = Estados.Leer;
         moveInput = Vector2.zero;
@@ -375,7 +375,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
         if (notaAbierta != null)
         {
-            notaAbierta.CloseNote();
+            notaAbierta.ClosePanel();
             notaAbierta = null;
         }
     }

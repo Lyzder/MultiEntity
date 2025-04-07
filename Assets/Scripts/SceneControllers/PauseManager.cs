@@ -59,5 +59,10 @@ public class PauseManager : MonoBehaviour
     {
         GameManager.Instance.ReloadCurrentScene();
     }
+
+    public void RestartGame()
+    {
+        GameManager.Instance.RestartGame();
+    }
 }
 

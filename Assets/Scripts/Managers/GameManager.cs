@@ -29,6 +29,11 @@ public class GameManager : MonoBehaviour
     SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    public void RestartGame()
+    {
+        SceneManager.LoadScene("Nivel1");
+    }
+
     // Carga la siguiente escena por index
     public void LoadNextScene()
     {

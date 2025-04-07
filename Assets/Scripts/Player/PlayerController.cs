@@ -114,6 +114,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         inputActions.Player.Interact.performed += OnInteract;
         inputActions.Player.Attack.performed += OnAttack;
         TranistionNotifier.OnAttackExit += FinishAttack;
+        TranistionNotifier.OnChangeExit += ChangeFinish;
     }
 
     private void OnDisable()
@@ -127,6 +128,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         inputActions.Player.Interact.performed -= OnInteract;
         inputActions.Player.Attack.performed -= OnAttack;
         TranistionNotifier.OnAttackExit -= FinishAttack;
+        TranistionNotifier.OnChangeExit -= ChangeFinish;
     }
 
     // Start is called before the first frame update
@@ -201,8 +203,9 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private void OnMove(InputAction.CallbackContext context)
     {
-        if (context.performed && !(estadoJugador == Estados.Daño || estadoJugador == Estados.Leer || estadoJugador == Estados.Cambio))
+        if (context.performed && estadoJugador != Estados.Daño && estadoJugador != Estados.Leer && estadoJugador != Estados.Cambio)
         {
+            Debug.Log(estadoJugador.ToString());
             moveInput = context.ReadValue<Vector2>();
         }
         else
@@ -270,8 +273,20 @@ public class PlayerController : MonoBehaviour, IDamageable
         if (estadoJugador == Estados.Empujar)
             StopPush();
         Debug.Log("Cambio");
+        estadoJugador = Estados.Cambio;
+        moveInput = Vector2.zero;
+        isSprint = false;
+        isSneak = false;
+        isObserve = false;
+        invulnerable = true;
         personaActiva = (short)personaId;
         animator.SetInteger("PersonaActiva", personaId);
+    }
+
+    public void ChangeFinish()
+    {
+        estadoJugador = Estados.Defecto;
+        invulnerable = false;
     }
 
     private void RotateSprite()

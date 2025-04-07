@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDamageable
 {
     // Control de sprites
     private SpriteRenderer spriteRenderer;
@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
 
     // Estado del jugador
     private bool isAlive;
+    private ushort health;
     public short personaActiva { get; private set; } // 0: Default. 1: Dep. 2: Int
     public enum Estados : ushort
     {
@@ -26,6 +27,7 @@ public class PlayerController : MonoBehaviour
         Sigilo = 3,
         Empujar = 4,
         Leer = 5,
+        Ataque = 6,
     }
     public Estados estadoJugador { get; private set; }
     public delegate void HighlightToggle(bool isHighlighted);
@@ -33,6 +35,7 @@ public class PlayerController : MonoBehaviour
 
     // Movement variables
     private Vector2 moveInput;
+    private float speed;
     private bool isSprint;
     private bool isSneak;
     private bool isObserve;
@@ -50,14 +53,20 @@ public class PlayerController : MonoBehaviour
     [Header("Interaccion")]
     [SerializeField] BoxCollider frontalTrigger;
     [SerializeField] SpriteRenderer topSprite;
+    [SerializeField] GameObject atkHitbox;
+    [SerializeField] float iFrames;
     private List<InteractableBase> objectsInRange;
     private GameObject pushingObj;
-    private NoteObject notaAbierta;
+    private InteractableBase notaAbierta;
+    private bool invulnerable;
+    private float iFramesTimer;
 
     // Efectos de sonido
     [Header("Efectos de sonido")]
     public AudioClip stepSfx;
     public AudioClip stepSoftSfx;
+    public AudioClip hurtSfx;
+    public AudioClip pushSfx;
 
     // Se crea una instancia para que se pueda mantener entre cambios de escenas
     private static PlayerController instance;
@@ -78,7 +87,11 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         cldr = GetComponent<BoxCollider>();
         animator = GetComponent<Animator>();
+        isAlive = true;
+        health = 3;
+        speed = 0;
         personaActiva = 0;
+        iFramesTimer = 0;
         isSprint = false;
         isSneak = false;
         isObserve = false;
@@ -99,6 +112,8 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.Sprint.performed += OnSkill;
         inputActions.Player.Sprint.canceled += OnSkill;
         inputActions.Player.Interact.performed += OnInteract;
+        inputActions.Player.Attack.performed += OnAttack;
+        TranistionNotifier.OnAttackExit += FinishAttack;
     }
 
     private void OnDisable()
@@ -110,6 +125,8 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.Sprint.performed -= OnSkill;
         inputActions.Player.Sprint.canceled -= OnSkill;
         inputActions.Player.Interact.performed -= OnInteract;
+        inputActions.Player.Attack.performed -= OnAttack;
+        TranistionNotifier.OnAttackExit -= FinishAttack;
     }
 
     // Start is called before the first frame update
@@ -166,6 +183,7 @@ public class PlayerController : MonoBehaviour
         }
 
         Vector3 desiredVelocity = moveDirection * currentSpeed;
+        speed = desiredVelocity.magnitude;
         animator.SetFloat("Velocidad", desiredVelocity.magnitude);
         desiredVelocity.y = rb.velocity.y; // Preserve vertical movement
 
@@ -295,6 +313,7 @@ public class PlayerController : MonoBehaviour
         obj.transform.SetParent(transform);
         pushingObj = obj;
         estadoJugador = Estados.Empujar;
+        StartCoroutine(PlayEffectLoop());
     }
 
     private void StopPush()
@@ -341,7 +360,7 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("Habilidad", isSneak || isSprint || isObserve);
     }
 
-    public void StartReading(NoteObject nota)
+    public void StartReading(InteractableBase nota)
     {
         estadoJugador = Estados.Leer;
         moveInput = Vector2.zero;
@@ -356,8 +375,77 @@ public class PlayerController : MonoBehaviour
         }
         if (notaAbierta != null)
         {
-            notaAbierta.CloseNote();
+            notaAbierta.ClosePanel();
             notaAbierta = null;
         }
+    }
+
+    private System.Collections.IEnumerator PlayEffectLoop()
+    {
+        while (estadoJugador == Estados.Empujar)
+        {
+            if (speed > 0)
+            {
+                AudioManager.Instance.PlaySFX(pushSfx);
+                yield return new WaitForSeconds(pushSfx.length);
+            }
+            else
+            {
+                yield return new WaitForFixedUpdate();
+            }
+        }
+    }
+
+    private void OnAttack(InputAction.CallbackContext context)
+    {
+        if (personaActiva != 1 || estadoJugador == Estados.Ataque)
+            return;
+        Debug.Log("Ataque");
+        estadoJugador = Estados.Ataque;
+        animator.SetTrigger("Atacar");
+        atkHitbox.SetActive(true);
+    }
+
+    private void FinishAttack()
+    {
+        animator.ResetTrigger("Atacar");
+        estadoJugador = Estados.Defecto;
+        atkHitbox.SetActive(false);
+    }
+
+    public void TakeDamage()
+    {
+        if (invulnerable)
+            return;
+        health -= 1;
+        estadoJugador = Estados.Daño;
+        animator.ResetTrigger("Daño");
+        animator.SetTrigger("Daño");
+        if (health == 0)
+        {
+            // TODO jugador murio
+        }
+        else
+        {
+            // TODO jugador sigue vivo
+            invulnerable = true;
+            StartCoroutine(InvulnerableTimer());
+        }
+    }
+
+    public bool IsInvulnerable()
+    {
+        return invulnerable;
+    }
+
+    private System.Collections.IEnumerator InvulnerableTimer()
+    {
+        iFramesTimer = 0;
+        while (iFramesTimer < iFrames)
+        {
+            iFramesTimer += Time.deltaTime;
+            yield return null;
+        }
+        invulnerable = false;
     }
 }

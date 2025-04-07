@@ -208,6 +208,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Silla_1
       objectReference: {fileID: 0}
+    - target: {fileID: 6129026047361395476, guid: 4713e0f1678236e46907bfcad10aafe4,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7395257569587179363, guid: 4713e0f1678236e46907bfcad10aafe4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -284,7 +289,7 @@ PrefabInstance:
     - target: {fileID: 1052456950433968489, guid: 529c5508cce4e714580dc0dae8697b9a,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.8700004
+      value: -2.86
       objectReference: {fileID: 0}
     - target: {fileID: 1052456950433968489, guid: 529c5508cce4e714580dc0dae8697b9a,
         type: 3}
@@ -418,13 +423,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 299731699}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.96, y: 1, z: -7.51}
+  m_LocalRotation: {x: 0.21435648, y: -0, z: -0, w: 0.97675556}
+  m_LocalPosition: {x: -5.11, y: 2.01, z: -7.86}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 24.756, y: 0, z: 0}
 --- !u!114 &299731703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -751,6 +756,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Silla_1 (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6129026047361395476, guid: 4713e0f1678236e46907bfcad10aafe4,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7395257569587179363, guid: 4713e0f1678236e46907bfcad10aafe4,
         type: 3}
@@ -1624,7 +1634,7 @@ PrefabInstance:
     - target: {fileID: 486967723759669877, guid: 63febc33b918edb4099ed05d66337c56,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.09
+      value: -0.37
       objectReference: {fileID: 0}
     - target: {fileID: 486967723759669877, guid: 63febc33b918edb4099ed05d66337c56,
         type: 3}
@@ -2253,7 +2263,7 @@ PrefabInstance:
     - target: {fileID: 6143894946223593927, guid: e2c981c6d63ad12489ca4ffc283ac078,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.91
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 6143894946223593927, guid: e2c981c6d63ad12489ca4ffc283ac078,
         type: 3}
@@ -2263,7 +2273,7 @@ PrefabInstance:
     - target: {fileID: 6143894946223593927, guid: e2c981c6d63ad12489ca4ffc283ac078,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.43
+      value: -6
       objectReference: {fileID: 0}
     - target: {fileID: 6143894946223593927, guid: e2c981c6d63ad12489ca4ffc283ac078,
         type: 3}
@@ -2304,6 +2314,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 8311454192933567822, guid: e2c981c6d63ad12489ca4ffc283ac078,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2514,7 +2529,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!135 &1343750106
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2972,6 +2987,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Silla_1 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 6129026047361395476, guid: 4713e0f1678236e46907bfcad10aafe4,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7395257569587179363, guid: 4713e0f1678236e46907bfcad10aafe4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3190,6 +3210,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Silla_1 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6129026047361395476, guid: 4713e0f1678236e46907bfcad10aafe4,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7395257569587179363, guid: 4713e0f1678236e46907bfcad10aafe4,
         type: 3}

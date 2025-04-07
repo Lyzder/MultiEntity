@@ -23,6 +23,8 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
+        if (player == null)
+            player = GameObject.FindWithTag("Player").transform;
         FollowPlayer();
         ClearHiddenObjects();
         OccludeObjects();

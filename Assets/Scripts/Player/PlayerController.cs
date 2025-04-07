@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 using UnityEngine.Windows;
 
 public class PlayerController : MonoBehaviour, IDamageable
@@ -48,6 +49,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     // Input
     private InputSystem_Actions inputActions;
+    private PlayerInput playerInput;
 
     // Entorno
     [Header("Interaccion")]
@@ -68,21 +70,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     public AudioClip hurtSfx;
     public AudioClip pushSfx;
 
-    // Se crea una instancia para que se pueda mantener entre cambios de escenas
-    private static PlayerController instance;
-
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         rb = GetComponent<Rigidbody>();
         cldr = GetComponent<BoxCollider>();
@@ -99,13 +88,14 @@ public class PlayerController : MonoBehaviour, IDamageable
         estadoJugador = 0;
         topSprite.enabled = false;
         objectsInRange = new List<InteractableBase>();
-
-        // Initialize Input Actions
-        inputActions = new InputSystem_Actions();
     }
 
     private void OnEnable()
     {
+        if (inputActions == null)
+            inputActions = new InputSystem_Actions();
+
+        inputActions.Enable();
         // Subscribe to input events
         inputActions.Player.Move.performed += OnMove;
         inputActions.Player.Move.canceled += OnMove;
@@ -119,7 +109,11 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private void OnDisable()
     {
+        TranistionNotifier.OnAttackExit -= FinishAttack;
+        TranistionNotifier.OnChangeExit -= ChangeFinish;
         // Unsubscribe to avoid leakages
+        if (inputActions == null)
+            return;
         inputActions.Disable();
         inputActions.Player.Move.performed -= OnMove;
         inputActions.Player.Move.canceled -= OnMove;
@@ -127,8 +121,6 @@ public class PlayerController : MonoBehaviour, IDamageable
         inputActions.Player.Sprint.canceled -= OnSkill;
         inputActions.Player.Interact.performed -= OnInteract;
         inputActions.Player.Attack.performed -= OnAttack;
-        TranistionNotifier.OnAttackExit -= FinishAttack;
-        TranistionNotifier.OnChangeExit -= ChangeFinish;
     }
 
     // Start is called before the first frame update
@@ -205,7 +197,6 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         if (context.performed && estadoJugador != Estados.Daño && estadoJugador != Estados.Leer && estadoJugador != Estados.Cambio)
         {
-            Debug.Log(estadoJugador.ToString());
             moveInput = context.ReadValue<Vector2>();
         }
         else
@@ -272,7 +263,6 @@ public class PlayerController : MonoBehaviour, IDamageable
             return;
         if (estadoJugador == Estados.Empujar)
             StopPush();
-        Debug.Log("Cambio");
         estadoJugador = Estados.Cambio;
         moveInput = Vector2.zero;
         isSprint = false;
@@ -419,7 +409,6 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         if (personaActiva != 1 || estadoJugador == Estados.Ataque || estadoJugador == Estados.Leer || estadoJugador == Estados.Empujar || estadoJugador == Estados.Daño)
             return;
-        Debug.Log("Ataque");
         estadoJugador = Estados.Ataque;
         animator.SetTrigger("Atacar");
         atkHitbox.SetActive(true);
@@ -457,7 +446,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         return invulnerable;
     }
 
-    private System.Collections.IEnumerator InvulnerableTimer()
+    private IEnumerator InvulnerableTimer()
     {
         iFramesTimer = 0;
         while (iFramesTimer < iFrames)

@@ -104,6 +104,7 @@ public class PlayerController : MonoBehaviour
     private void OnDisable()
     {
         // Unsubscribe to avoid leakages
+        if (inputActions == null) return;
         inputActions.Disable();
         inputActions.Player.Move.performed -= OnMove;
         inputActions.Player.Move.canceled -= OnMove;

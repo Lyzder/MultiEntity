@@ -436,7 +436,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 10ef4134cb8a43f4888a0a9501f11d76, type: 2}
+  - {fileID: 2100000, guid: 74c0329729483b04b8dfd2d2d908bff5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -573,6 +573,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 411267338ad6ac1448b3015259bddc52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  highlightMaterial: {fileID: 2100000, guid: 74c0329729483b04b8dfd2d2d908bff5, type: 2}
+  highlightGlowColor: {r: 0.90188676, g: 0.90188676, b: 0.90188676, a: 1}
   rangeSweepCast: 0.11
   moveSpeed: 4
   sprintMultiplier: 2

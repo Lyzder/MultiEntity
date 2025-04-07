@@ -9,6 +9,11 @@ public class PlayerController : MonoBehaviour, IDamageable
     // Control de sprites
     private SpriteRenderer spriteRenderer;
     private Animator animator;
+    [SerializeField] Material highlightMaterial;
+    private static Color originalGlowColor;
+    public Color highlightGlowColor = new(128f, 122f, 0f);
+    [SerializeField] private float highlightDuration = 0.5f;
+    private Coroutine highlightCoroutine;
 
     // Físicas y colisiones
     private Rigidbody rb;
@@ -89,6 +94,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         estadoJugador = 0;
         topSprite.enabled = false;
         objectsInRange = new List<InteractableBase>();
+        originalGlowColor = highlightMaterial.GetColor("_GlowColor");
     }
 
     private void OnEnable()
@@ -461,5 +467,57 @@ public class PlayerController : MonoBehaviour, IDamageable
     public void SetSpawnPoint(Vector3 spawnPoint)
     {
         this.spanwPoint = spawnPoint;
+    }
+
+    public void SetHighlight()
+    {
+        if (highlightCoroutine != null)
+            StopCoroutine(highlightCoroutine);
+
+        highlightCoroutine = StartCoroutine(TransitionHighlightColor());
+    }
+
+    private IEnumerator TransitionHighlightColor()
+    {
+        Color startColor = highlightMaterial.GetColor("_GlowColor");
+        Color targetColor = highlightGlowColor;
+        float time = 0f;
+
+        while (time < highlightDuration)
+        {
+            time += Time.deltaTime;
+            Color newColor = Color.Lerp(startColor, targetColor, time / highlightDuration);
+            highlightMaterial.SetColor("_GlowColor", newColor);
+            yield return null;
+        }
+
+        // Ensure it's set exactly at the end
+        highlightMaterial.SetColor("_GlowColor", targetColor);
+    }
+
+    public void ResetHighlight()
+    {
+        if (highlightCoroutine != null)
+            StopCoroutine(highlightCoroutine);
+
+        highlightCoroutine = StartCoroutine(TransitionOriginalColor());
+    }
+
+    private IEnumerator TransitionOriginalColor()
+    {
+        Color startColor = highlightMaterial.GetColor("_GlowColor");
+        Color targetColor = originalGlowColor;
+        float time = 0f;
+
+        while (time < highlightDuration)
+        {
+            time += Time.deltaTime;
+            Color newColor = Color.Lerp(startColor, targetColor, time / highlightDuration);
+            highlightMaterial.SetColor("_GlowColor", newColor);
+            yield return null;
+        }
+
+        // Ensure it's set exactly at the end
+        highlightMaterial.SetColor("_GlowColor", targetColor);
     }
 }

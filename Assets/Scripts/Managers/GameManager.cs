@@ -1,10 +1,12 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance {  get; private set; }
     private bool isPaused;
+    [SerializeField] GameObject playerPrefab;
 
     private void Awake()
     {
@@ -64,10 +66,26 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("CreditsMenu", LoadSceneMode.Additive);
     }
 
-    public void TransitionPoint(string sceneName, Vector3 spawnPosition, GameObject player)
+    public void TransitionPoint(string sceneName, Vector3 spawnPosition)
     {
+        StartCoroutine(LoadSceneAndSpawnPlayer(sceneName, spawnPosition));
+    }
 
-        SceneManager.LoadScene(sceneName);
+    private IEnumerator LoadSceneAndSpawnPlayer(string sceneName, Vector3 spawnPosition)
+    {
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+
+        // Wait until the scene is fully loaded
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
+        }
+
+        // After the scene is loaded
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null)
+            player = Instantiate(playerPrefab);
+
         player.transform.position = spawnPosition;
     }
 

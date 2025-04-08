@@ -40,8 +40,7 @@ public class PauseManager : MonoBehaviour
         }
     }
 
-     public void Pause()
-
+    public void Pause()
     {
         menuPause.SetActive(true);
         Time.timeScale = 0;
@@ -49,14 +48,14 @@ public class PauseManager : MonoBehaviour
     }
 
     public void LoadScene(string name)
-
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene(name);
     }
 
     public void ReloadScene()
-
     {
+        Time.timeScale = 1;
         GameManager.Instance.ReloadCurrentScene();
     }
 

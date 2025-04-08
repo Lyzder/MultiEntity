@@ -63,6 +63,7 @@ public class Boss : MonoBehaviour, IDamageable
             CooldownCount();
             return;
         }
+        animator.SetFloat("Velocidad", agent.velocity.magnitude);
         if (isAgro)
         {
             ChasePlayer();

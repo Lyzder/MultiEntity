@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.AI;
 using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
@@ -32,6 +31,10 @@ public class Boss : MonoBehaviour, IDamageable
     [Header("Evento")]
     [SerializeField] GameFlags gameFlag;
 
+    [Header("Efectos de sonido")]
+    private AudioSource audioSource;
+    public AudioClip stepSfx1, stepSfx2;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -45,6 +48,7 @@ public class Boss : MonoBehaviour, IDamageable
         agent.isStopped = false;
         patrolTimer = 0;
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
         SetNewDestination();
     }
 
@@ -58,6 +62,7 @@ public class Boss : MonoBehaviour, IDamageable
             CooldownCount();
             return;
         }
+        animator.SetFloat("Velocidad", agent.velocity.magnitude);
         if (isAgro)
         {
             ChasePlayer();
@@ -252,5 +257,18 @@ public class Boss : MonoBehaviour, IDamageable
     {
         isRage = true;
         agent.speed *= 4 / 3;
+    }
+
+    public void PlaySfx(int index)
+    {
+        switch (index)
+        {
+            case 1:
+                AudioManager.Instance.PlaySFXDirectional(stepSfx2, audioSource); 
+                break;
+            default:
+                AudioManager.Instance.PlaySFXDirectional(stepSfx1, audioSource);
+                break;
+        }
     }
 }

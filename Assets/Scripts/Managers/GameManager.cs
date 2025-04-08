@@ -126,6 +126,11 @@ public class GameManager : MonoBehaviour
             PlayerLost?.Invoke();
         }
     }
+
+    public void ResetMusicLevel()
+    {
+        AudioManager.Instance.ReiniciarBGM();
+    }
 }
 /*Forma de utilizar funciones en otros scripts, llamar escenas por nombres
 GameManager.instance.LoadSceneByName("Menu") */

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
+using static UnityEngine.Rendering.DebugUI;
 
 public class AudioManager : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class AudioManager : MonoBehaviour
 
     [Header("Música de Fondo")]
     public AudioClip mainMenuMusic;
-    public AudioClip GeneralMusic;
+    public AudioClip GeneralMusic, nivel2, nivel3;
 
     /*
      * Evitar cargar el manager con efectos de sonido. El manager debe encargarse de reproducir lo que le mandan, por eso los métodos son públicos.
@@ -31,17 +32,18 @@ public class AudioManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        TriggerNivel.AdvanceLevel += (flag) => AdvanceMusic(flag);
+    }
+
+    private void OnDisable()
+    {
+        
     }
 
     private void Start()
     {
-        float savedMusic = PlayerPrefs.GetFloat("MusicVolume", 0f);
-        float savedSFX = PlayerPrefs.GetFloat("SFXVolume", 0f);
-        float savedMaster = PlayerPrefs.GetFloat("GeneralVolume", 0f);
-
-        MusicVolumeControl(savedMusic);
-        SFXVolumeControl(savedSFX);
-        GeneralVolumeControl(savedMaster);
+        InitialValues();
     }
 
 
@@ -98,5 +100,49 @@ public class AudioManager : MonoBehaviour
     public void GeneralVolumeControl(float volume)
     {
         Master.SetFloat("Master", volume);
+    }
+
+    private void PlayBGM(int index)
+    {
+        switch (index)
+        {
+            case 1:
+                PlayMusic(mainMenuMusic);
+                break;
+            case 2:
+                PlayMusic(nivel2);
+                break;
+            case 3:
+                PlayMusic(nivel3);
+                break;
+            default:
+                PlayMusic(mainMenuMusic);
+                break;
+        }
+    }
+
+    public void ReiniciarBGM()
+    {
+        PlayBGM(0);
+    }
+
+    private void AdvanceMusic(GameFlags flag)
+    {
+        if (flag == GameFlags.EnterLevel3)
+            PlayBGM(3);
+        else if (flag == GameFlags.EnterLevel2)
+            PlayBGM(2);
+        else
+            PlayBGM(1);
+    }
+
+    private void InitialValues()
+    {
+        GeneralVolumeControl(0);
+        PlayerPrefs.SetFloat("GeneralVolume", 0);
+        MusicVolumeControl(0);
+        PlayerPrefs.SetFloat("MusicVolume", 0);
+        SFXVolumeControl(0);
+        PlayerPrefs.SetFloat("SFXVolume", 0);
     }
 }

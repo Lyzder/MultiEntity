@@ -20,11 +20,10 @@ public class PushableObject : InteractableBase
     {
         if (player.personaActiva != 1)
         {
-            Debug.Log("No puede empujar");
+            
         }
         else
         {
-            Debug.Log("Empujar");
             //TODO
             player.StartPush(gameObject);
         }

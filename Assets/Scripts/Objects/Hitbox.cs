@@ -35,7 +35,6 @@ public class Hitbox : MonoBehaviour
             damageable.TakeDamage();
             AudioManager.Instance.PlaySFX(hitSfx);
             ignoreObjects.Add(damageable);
-            Debug.Log("Hit: " + other.name);
         }
     }
 }

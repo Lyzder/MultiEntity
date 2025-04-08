@@ -36,9 +36,6 @@ AnimatorStateTransition:
   - m_ConditionMode: 6
     m_ConditionEvent: PersonaActiva
     m_EventTreshold: 2
-  - m_ConditionMode: 2
-    m_ConditionEvent: Forced
-    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -1190619301429188097}
   m_Solo: 0
@@ -286,34 +283,6 @@ AnimatorStateTransition:
   m_HasExitTime: 0
   m_HasFixedDuration: 0
   m_InterruptionSource: 2
-  m_OrderedInterruption: 1
-  m_CanTransitionToSelf: 1
---- !u!1101 &-6495800706752884726
-AnimatorStateTransition:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: PersonaActiva
-    m_EventTreshold: 2
-  - m_ConditionMode: 1
-    m_ConditionEvent: Forced
-    m_EventTreshold: 0
-  m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 6799343895834156827}
-  m_Solo: 0
-  m_Mute: 0
-  m_IsExit: 0
-  serializedVersion: 3
-  m_TransitionDuration: 0.25
-  m_TransitionOffset: 0
-  m_ExitTime: 0
-  m_HasExitTime: 0
-  m_HasFixedDuration: 0
-  m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
 --- !u!1101 &-6361334818078203186
@@ -574,7 +543,7 @@ AnimatorStateMachine:
     m_Position: {x: 310, y: 120, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2069681548259000610}
-    m_Position: {x: 1440, y: -800, z: 0}
+    m_Position: {x: 1470, y: -770, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6799343895834156827}
     m_Position: {x: 1470, y: 920, z: 0}
@@ -625,7 +594,7 @@ AnimatorStateMachine:
     m_Position: {x: 2139.8218, y: -1130.237, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6750587398083866771}
-    m_Position: {x: 656.6528, y: 625.03107, z: 0}
+    m_Position: {x: 660, y: 600, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -647,9 +616,6 @@ AnimatorStateTransition:
   - m_ConditionMode: 6
     m_ConditionEvent: PersonaActiva
     m_EventTreshold: 1
-  - m_ConditionMode: 2
-    m_ConditionEvent: Forced
-    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -8316401392732776308}
   m_Solo: 0
@@ -778,9 +744,6 @@ AnimatorStateTransition:
   - m_ConditionMode: 6
     m_ConditionEvent: PersonaActiva
     m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: Forced
-    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 9030476355330916422}
   m_Solo: 0
@@ -793,34 +756,6 @@ AnimatorStateTransition:
   m_HasExitTime: 0
   m_HasFixedDuration: 0
   m_InterruptionSource: 2
-  m_OrderedInterruption: 1
-  m_CanTransitionToSelf: 1
---- !u!1101 &-4027712797411007889
-AnimatorStateTransition:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: PersonaActiva
-    m_EventTreshold: 0
-  - m_ConditionMode: 1
-    m_ConditionEvent: Forced
-    m_EventTreshold: 0
-  m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1972872527400262262}
-  m_Solo: 0
-  m_Mute: 0
-  m_IsExit: 0
-  serializedVersion: 3
-  m_TransitionDuration: 0
-  m_TransitionOffset: 0
-  m_ExitTime: 3.1993846e-10
-  m_HasExitTime: 0
-  m_HasFixedDuration: 0
-  m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
 --- !u!1101 &-3987933098958932659
@@ -846,34 +781,6 @@ AnimatorStateTransition:
   m_HasExitTime: 0
   m_HasFixedDuration: 0
   m_InterruptionSource: 2
-  m_OrderedInterruption: 1
-  m_CanTransitionToSelf: 1
---- !u!1101 &-3673150022327427607
-AnimatorStateTransition:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: PersonaActiva
-    m_EventTreshold: 1
-  - m_ConditionMode: 1
-    m_ConditionEvent: Forced
-    m_EventTreshold: 0
-  m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 2069681548259000610}
-  m_Solo: 0
-  m_Mute: 0
-  m_IsExit: 0
-  serializedVersion: 3
-  m_TransitionDuration: 0
-  m_TransitionOffset: 0
-  m_ExitTime: 0.0000000017716731
-  m_HasExitTime: 0
-  m_HasFixedDuration: 0
-  m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
 --- !u!1101 &-2812163568764685731
@@ -958,9 +865,6 @@ AnimatorStateTransition:
   - m_ConditionMode: 6
     m_ConditionEvent: PersonaActiva
     m_EventTreshold: 2
-  - m_ConditionMode: 2
-    m_ConditionEvent: Forced
-    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -1190619301429188097}
   m_Solo: 0
@@ -1035,9 +939,6 @@ AnimatorStateTransition:
   - m_ConditionMode: 6
     m_ConditionEvent: PersonaActiva
     m_EventTreshold: 2
-  - m_ConditionMode: 2
-    m_ConditionEvent: Forced
-    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -1190619301429188097}
   m_Solo: 0
@@ -1091,9 +992,6 @@ AnimatorStateTransition:
   - m_ConditionMode: 6
     m_ConditionEvent: PersonaActiva
     m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: Forced
-    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 9030476355330916422}
   m_Solo: 0
@@ -1119,9 +1017,6 @@ AnimatorStateTransition:
   - m_ConditionMode: 6
     m_ConditionEvent: PersonaActiva
     m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: Forced
-    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 9030476355330916422}
   m_Solo: 0
@@ -1131,34 +1026,6 @@ AnimatorStateTransition:
   m_TransitionDuration: 0
   m_TransitionOffset: 0
   m_ExitTime: 0
-  m_HasExitTime: 0
-  m_HasFixedDuration: 0
-  m_InterruptionSource: 2
-  m_OrderedInterruption: 1
-  m_CanTransitionToSelf: 1
---- !u!1101 &-1288229708239882039
-AnimatorStateTransition:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: PersonaActiva
-    m_EventTreshold: 0
-  - m_ConditionMode: 1
-    m_ConditionEvent: Forced
-    m_EventTreshold: 0
-  m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1972872527400262262}
-  m_Solo: 0
-  m_Mute: 0
-  m_IsExit: 0
-  serializedVersion: 3
-  m_TransitionDuration: 0.022837382
-  m_TransitionOffset: 0
-  m_ExitTime: 0.0000000016971483
   m_HasExitTime: 0
   m_HasFixedDuration: 0
   m_InterruptionSource: 2
@@ -1483,12 +1350,6 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: Forced
-    m_Type: 4
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -1512,9 +1373,6 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 6
     m_ConditionEvent: PersonaActiva
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: Forced
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 9030476355330916422}
@@ -1792,8 +1650,6 @@ AnimatorState:
   - {fileID: -6361334818078203186}
   - {fileID: 194537770272868348}
   - {fileID: -7268209874129472728}
-  - {fileID: -3673150022327427607}
-  - {fileID: -6495800706752884726}
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
@@ -1848,8 +1704,6 @@ AnimatorState:
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
-  - {fileID: -1288229708239882039}
-  - {fileID: 9197999169036993324}
   - {fileID: -58094477764229803}
   - {fileID: 980637446426103750}
   - {fileID: -8128213671696335644}
@@ -2095,9 +1949,6 @@ AnimatorStateTransition:
   - m_ConditionMode: 6
     m_ConditionEvent: PersonaActiva
     m_EventTreshold: 1
-  - m_ConditionMode: 2
-    m_ConditionEvent: Forced
-    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -8316401392732776308}
   m_Solo: 0
@@ -2170,34 +2021,6 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!1101 &5446824296946691754
-AnimatorStateTransition:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: PersonaActiva
-    m_EventTreshold: 1
-  - m_ConditionMode: 1
-    m_ConditionEvent: Forced
-    m_EventTreshold: 0
-  m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 2069681548259000610}
-  m_Solo: 0
-  m_Mute: 0
-  m_IsExit: 0
-  serializedVersion: 3
-  m_TransitionDuration: 0.034652196
-  m_TransitionOffset: 0
-  m_ExitTime: 0
-  m_HasExitTime: 0
-  m_HasFixedDuration: 0
-  m_InterruptionSource: 0
-  m_OrderedInterruption: 1
-  m_CanTransitionToSelf: 1
 --- !u!1101 &5670505191239187835
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -2208,9 +2031,6 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 6
     m_ConditionEvent: PersonaActiva
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: Forced
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 9030476355330916422}
@@ -2237,9 +2057,6 @@ AnimatorStateTransition:
   - m_ConditionMode: 6
     m_ConditionEvent: PersonaActiva
     m_EventTreshold: 1
-  - m_ConditionMode: 2
-    m_ConditionEvent: Forced
-    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -8316401392732776308}
   m_Solo: 0
@@ -2322,8 +2139,6 @@ AnimatorState:
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
-  - {fileID: 5446824296946691754}
-  - {fileID: -4027712797411007889}
   - {fileID: -4419469606725454000}
   - {fileID: -1052952367924717388}
   - {fileID: 9168368608299163884}
@@ -2536,9 +2351,6 @@ AnimatorStateTransition:
   - m_ConditionMode: 6
     m_ConditionEvent: PersonaActiva
     m_EventTreshold: 1
-  - m_ConditionMode: 2
-    m_ConditionEvent: Forced
-    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -8316401392732776308}
   m_Solo: 0
@@ -2592,9 +2404,6 @@ AnimatorStateTransition:
   - m_ConditionMode: 6
     m_ConditionEvent: PersonaActiva
     m_EventTreshold: 1
-  - m_ConditionMode: 2
-    m_ConditionEvent: Forced
-    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -8316401392732776308}
   m_Solo: 0
@@ -2607,33 +2416,5 @@ AnimatorStateTransition:
   m_HasExitTime: 0
   m_HasFixedDuration: 0
   m_InterruptionSource: 2
-  m_OrderedInterruption: 1
-  m_CanTransitionToSelf: 1
---- !u!1101 &9197999169036993324
-AnimatorStateTransition:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: PersonaActiva
-    m_EventTreshold: 2
-  - m_ConditionMode: 1
-    m_ConditionEvent: Forced
-    m_EventTreshold: 0
-  m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 6799343895834156827}
-  m_Solo: 0
-  m_Mute: 0
-  m_IsExit: 0
-  serializedVersion: 3
-  m_TransitionDuration: 0
-  m_TransitionOffset: 0
-  m_ExitTime: 0
-  m_HasExitTime: 0
-  m_HasFixedDuration: 0
-  m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1

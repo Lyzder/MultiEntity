@@ -8,13 +8,16 @@ public class DoorObject : InteractableBase
     [SerializeField] GameFlags eventoPuerta;
     private Animator animator;
     private Collider trigger;
+    private bool abierta;
     public AudioClip openSfx;
+    public bool autoOpen;
 
     // Start is called before the first frame update
     void Awake()
     {
         animator = GetComponent<Animator>();
         trigger = GetComponent<Collider>();
+        abierta = false;
     }
 
     private void Start()
@@ -29,14 +32,30 @@ public class DoorObject : InteractableBase
     // Update is called once per frame
     void Update()
     {
-        
+        if (autoOpen && !abierta && RevisarCondiciones())
+            AbrirPuerta();
     }
 
     public override void Interact(PlayerController player)
     {
+        if (RevisarCondiciones())
+        {
+            // TODO abrir puerta
+            DeactivateTrigger();
+            player.ObjectOutOfRange(this);
+            AbrirPuerta();
+        }
+        else
+        {
+            // TODO puerta no se abre
+        }
+    }
+
+    private bool RevisarCondiciones()
+    {
         bool cumple = true;
 
-        foreach(GameFlags cond in condiciones)
+        foreach (GameFlags cond in condiciones)
         {
             if (!GameEventManager.Instance.HasFlag(cond))
             {
@@ -44,19 +63,16 @@ public class DoorObject : InteractableBase
                 break;
             }
         }
-        if (cumple)
-        {
-            // TODO abrir puerta
-            animator.SetBool("IsOpen", true);
-            GameEventManager.Instance.SetFlag(eventoPuerta);
-            DeactivateTrigger();
-            player.ObjectOutOfRange(this);
-            AudioManager.Instance.PlaySFX(openSfx);
-        }
-        else
-        {
-            // TODO puerta no se abre
-        }
+
+        return cumple;
+    }
+
+    private void AbrirPuerta()
+    {
+        animator.SetBool("IsOpen", true);
+        GameEventManager.Instance.SetFlag(eventoPuerta);
+        AudioManager.Instance.PlaySFX(openSfx);
+        abierta = true;
     }
 
     private void DeactivateTrigger()

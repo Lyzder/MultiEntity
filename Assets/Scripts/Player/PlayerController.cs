@@ -76,6 +76,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     public AudioClip stepSoftSfx;
     public AudioClip hurtSfx;
     public AudioClip pushSfx;
+    public AudioClip changeSfx;
 
     private void Awake()
     {
@@ -282,7 +283,9 @@ public class PlayerController : MonoBehaviour, IDamageable
         isObserve = false;
         invulnerable = true;
         personaActiva = (short)personaId;
+        animator.SetBool("Forced", false);
         animator.SetInteger("PersonaActiva", personaId);
+        AudioManager.Instance.PlaySFX(changeSfx);
     }
 
     public void ChangeFinish()
@@ -394,7 +397,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         notaAbierta = nota;
     }
 
-    private void StopReading()
+    public void StopReading()
     {
         if(estadoJugador == Estados.Leer)
         {
@@ -537,5 +540,13 @@ public class PlayerController : MonoBehaviour, IDamageable
     private void ExitDamage()
     {
         estadoJugador = Estados.Defecto;
+    }
+
+    public void ForceTransition(int personaId)
+    {
+
+        animator.SetBool("Forced", true);
+        animator.SetInteger("PersonaActiva", personaId);
+        personaActiva = (short)personaId;
     }
 }

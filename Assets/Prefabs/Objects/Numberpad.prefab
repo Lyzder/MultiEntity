@@ -3107,9 +3107,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: {fileID: 2255287835316511456}
   text: {fileID: 3335391954589526222}
-  flag: 0
-  code: 1234
-  codeLength: 4
+  flag: 8
+  trigger: {fileID: 8989497905927095481}
+  code: 69
+  codeLength: 2
 --- !u!65 &8989497905927095481
 BoxCollider:
   m_ObjectHideFlags: 0

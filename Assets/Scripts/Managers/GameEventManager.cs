@@ -17,6 +17,8 @@ public enum GameFlags
     OpenDoorRoom3 = 1 << 6, // 64
     CodeRoom3 = 1 << 7, // 128
     EnemyRoom3 = 1 << 8, // 256
+    EnterLevel2 = 1 << 9, // 512
+    EnterLevel3 = 1 << 10, // 1024
 }
 
 public class GameEventManager : MonoBehaviour

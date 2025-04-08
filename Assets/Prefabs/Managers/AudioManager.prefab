@@ -43,11 +43,11 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 6984883060869621346, guid: 18de3fc248bf54843bd43bb5ad9148a6,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 043c8c2e85cd3624abab7174863169e4, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 6839e8fd31d04984781d553bbe00ddb9, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -307,5 +307,7 @@ MonoBehaviour:
   sfxAudio: {fileID: 6314635683966812254}
   musicAudio: {fileID: 6776756743643226480}
   Master: {fileID: 24100000, guid: 18de3fc248bf54843bd43bb5ad9148a6, type: 2}
-  mainMenuMusic: {fileID: 0}
-  GeneralMusic: {fileID: 8300000, guid: 043c8c2e85cd3624abab7174863169e4, type: 3}
+  mainMenuMusic: {fileID: 8300000, guid: 6839e8fd31d04984781d553bbe00ddb9, type: 3}
+  nivel1: {fileID: 8300000, guid: 6839e8fd31d04984781d553bbe00ddb9, type: 3}
+  nivel2: {fileID: 8300000, guid: 3623b55013913334eb9a1dd805be0720, type: 3}
+  nivel3: {fileID: 8300000, guid: d27b8102d42c2b54782274532b65fd8f, type: 3}

@@ -27,14 +27,10 @@ public class NoteObject : InteractableBase
     {
         if (tieneSecreto && player.personaActiva == 2)
         {
-            // TODO leer como inteligente
-            Debug.Log("Leer como inteligente");
             image.sprite = mensajeSecreto;
         }
         else
         {
-            // TODO leer normal
-            Debug.Log("Leer la nota");
             image.sprite = mensaje;
         }
         OpenPanel();

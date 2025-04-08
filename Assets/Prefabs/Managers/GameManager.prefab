@@ -46,3 +46,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 8311454192933567822, guid: e2c981c6d63ad12489ca4ffc283ac078,
     type: 3}
+  playerLives: 3

@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
 using UnityEngine.Windows;
+using System;
 
 public class PlayerController : MonoBehaviour, IDamageable
 {
@@ -35,10 +36,9 @@ public class PlayerController : MonoBehaviour, IDamageable
         Empujar = 4,
         Leer = 5,
         Ataque = 6,
+        JuegoTerminado = 7,
     }
     public Estados estadoJugador { get; private set; }
-    public delegate void HighlightToggle(bool isHighlighted);
-    public static event HighlightToggle OnHighlightToggle;
 
     // Movement variables
     private Vector2 moveInput;
@@ -78,6 +78,11 @@ public class PlayerController : MonoBehaviour, IDamageable
     public AudioClip pushSfx;
     public AudioClip changeSfx;
 
+    // Eventos
+    public delegate void HighlightToggle(bool isHighlighted);
+    public static event HighlightToggle OnHighlightToggle;
+    public static event Action PlayerDied;
+
     private void Awake()
     {
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
@@ -96,7 +101,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         estadoJugador = 0;
         topSprite.enabled = false;
         objectsInRange = new List<InteractableBase>();
-        originalGlowColor = highlightMaterial.GetColor("_GlowColor");
+        originalGlowColor = new Color(0, 0, 0);
     }
 
     private void OnEnable()
@@ -137,13 +142,14 @@ public class PlayerController : MonoBehaviour, IDamageable
     // Start is called before the first frame update
     void Start()
     {
+        ResetHighlight();
         EnableControl();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!isAlive)
+        if (!isAlive || estadoJugador == Estados.JuegoTerminado)
             return;
         Move();
         ShowCanInteract();
@@ -277,13 +283,13 @@ public class PlayerController : MonoBehaviour, IDamageable
         if (estadoJugador == Estados.Empujar)
             StopPush();
         estadoJugador = Estados.Cambio;
+        GameEventManager.Instance.ResetHighlight();
         moveInput = Vector2.zero;
         isSprint = false;
         isSneak = false;
         isObserve = false;
         invulnerable = true;
         personaActiva = (short)personaId;
-        animator.SetBool("Forced", false);
         animator.SetInteger("PersonaActiva", personaId);
         AudioManager.Instance.PlaySFX(changeSfx);
     }
@@ -455,6 +461,9 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             isAlive = false;
             animator.SetBool("Muerto", true);
+            DisableControl();
+            moveInput = Vector2.zero;
+            StartCoroutine(DeadSequence());
         }
         else
         {
@@ -475,9 +484,17 @@ public class PlayerController : MonoBehaviour, IDamageable
         while (iFramesTimer < iFrames)
         {
             iFramesTimer += Time.deltaTime;
+            spriteRenderer.enabled = !spriteRenderer.enabled;
             yield return null;
         }
+        spriteRenderer.enabled = true;
         invulnerable = false;
+    }
+
+    private IEnumerator DeadSequence()
+    {
+        yield return new WaitForSeconds(3f);
+        PlayerDied?.Invoke();
     }
 
     public void SetSpawnPoint(Vector3 spawnPoint)
@@ -540,13 +557,28 @@ public class PlayerController : MonoBehaviour, IDamageable
     private void ExitDamage()
     {
         estadoJugador = Estados.Defecto;
+        if (!isAlive)
+            animator.Play("Die");
     }
 
     public void ForceTransition(int personaId)
     {
 
-        animator.SetBool("Forced", true);
-        animator.SetInteger("PersonaActiva", personaId);
+        switch (personaId)
+        {
+            case 1:
+                animator.Play("Idle Dep");
+                animator.SetInteger("PersonaActiva", 1);
+                break;
+            case 2:
+                animator.Play("Idle Int");
+                animator.SetInteger("PersonaActiva", 2);
+                break;
+            default:
+                animator.Play("Idle Default");
+                animator.SetInteger("PersonaActiva", 0);
+                break;
+        }
         personaActiva = (short)personaId;
     }
 }

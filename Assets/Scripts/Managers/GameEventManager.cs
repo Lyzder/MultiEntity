@@ -14,6 +14,9 @@ public enum GameFlags
     CodeRoom2 = 1 << 3, // 8
     OpenDoor1Room2 = 1 << 4, // 16
     OpenDoor2Room2 = 1 << 5, // 32
+    OpenDoorRoom3 = 1 << 6, // 64
+    CodeRoom3 = 1 << 7, // 128
+    EnemyRoom3 = 1 << 8, // 256
 }
 
 public class GameEventManager : MonoBehaviour
@@ -38,7 +41,7 @@ public class GameEventManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        originalGlowColor = highlightMaterial.GetColor("_GlowColor");
+        originalGlowColor = new(0, 0, 0);
 
         // Subscribe to the highlight event
         PlayerController.OnHighlightToggle += SetHighlight;
@@ -88,5 +91,10 @@ public class GameEventManager : MonoBehaviour
     private void SetHighlight(bool isHighlighted)
     {
         highlightMaterial.SetColor("_GlowColor", isHighlighted ? highlightGlowColor : originalGlowColor);
+    }
+
+    public void ResetHighlight()
+    {
+        highlightMaterial.SetColor("_GlowColor", originalGlowColor);
     }
 }

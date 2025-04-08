@@ -23,7 +23,8 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     // Estado del jugador
     public bool isAlive { get; private set; }
-    private ushort health;
+    [SerializeField] ushort health;
+    [SerializeField] ushort lives;
     public short personaActiva { get; private set; } // 0: Default. 1: Dep. 2: Int
     public enum Estados : ushort
     {
@@ -110,14 +111,16 @@ public class PlayerController : MonoBehaviour, IDamageable
         inputActions.Player.Sprint.canceled += OnSkill;
         inputActions.Player.Interact.performed += OnInteract;
         inputActions.Player.Attack.performed += OnAttack;
-        TranistionNotifier.OnAttackExit += FinishAttack;
-        TranistionNotifier.OnChangeExit += ChangeFinish;
+        TransitionNotifier.OnAttackExit += FinishAttack;
+        TransitionNotifier.OnChangeExit += ChangeFinish;
+        TransitionNotifier.OnDamageExit += ExitDamage;
     }
 
     private void OnDisable()
     {
-        TranistionNotifier.OnAttackExit -= FinishAttack;
-        TranistionNotifier.OnChangeExit -= ChangeFinish;
+        TransitionNotifier.OnAttackExit -= FinishAttack;
+        TransitionNotifier.OnChangeExit -= ChangeFinish;
+        TransitionNotifier.OnDamageExit -= ExitDamage;
         // Unsubscribe to avoid leakages
         if (inputActions == null)
             return;
@@ -444,6 +447,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         estadoJugador = Estados.Daño;
         animator.ResetTrigger("Daño");
         animator.SetTrigger("Daño");
+        AudioManager.Instance.PlaySFX(hurtSfx);
         if (health <= 0)
         {
             isAlive = false;
@@ -459,7 +463,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public bool IsInvulnerable()
     {
-        return invulnerable;
+        return invulnerable || !isAlive;
     }
 
     private IEnumerator InvulnerableTimer()
@@ -528,5 +532,10 @@ public class PlayerController : MonoBehaviour, IDamageable
 
         // Ensure it's set exactly at the end
         highlightMaterial.SetColor("_GlowColor", targetColor);
+    }
+
+    private void ExitDamage()
+    {
+        estadoJugador = Estados.Defecto;
     }
 }

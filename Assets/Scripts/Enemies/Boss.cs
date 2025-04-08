@@ -11,7 +11,9 @@ public class Boss : MonoBehaviour, IDamageable
     public int health;
     [SerializeField] Collider search, searchSmall;
     [SerializeField] GameObject agroRange;
-    [SerializeField] BoxCollider atkHitbox;
+    [SerializeField] GameObject atkHitbox;
+    [SerializeField] float atkCooldown;
+    private float cooldownTimer;
     private bool isAgro, isAlive, isAttacking;
     private NavMeshAgent agent;
     private List<GameObject> searchNodes;
@@ -33,15 +35,16 @@ public class Boss : MonoBehaviour, IDamageable
     // Start is called before the first frame update
     void Start()
     {
+        searchNodes = new List<GameObject>(GameObject.FindGameObjectsWithTag("Search Node"));
         isAlive = true;
         isAgro = false;
         isAttacking = false;
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
-        agent.destination = transform.position;
+        agent.isStopped = false;
         patrolTimer = 0;
-        searchNodes = new List<GameObject>(GameObject.FindGameObjectsWithTag("Search Node"));
         animator = GetComponent<Animator>();
+        SetNewDestination();
     }
 
     // Update is called once per frame
@@ -49,11 +52,31 @@ public class Boss : MonoBehaviour, IDamageable
     {
         if (!isAlive)
             return;
-        if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+        if (isAttacking)
+        {
+            CooldownCount();
+            return;
+        }
+        if (isAgro)
+        {
+            ChasePlayer();
+            if (agent.remainingDistance <= 2)
+            {
+                FacePlayer();
+                StartAttack();
+                return;
+            }
+        }
+        else if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
         {
             SearchWait();
         }
         FlipSprite();
+    }
+
+    void OnAnimatorMove()
+    {
+        transform.position = agent.nextPosition;
     }
 
     public bool IsInvulnerable()
@@ -76,18 +99,19 @@ public class Boss : MonoBehaviour, IDamageable
         List<GameObject> list;
         if (currentNode == null)
         {
-            i = Random.Range(0, searchNodes.Count - 1);
+            i = Random.Range(0, searchNodes.Count);
             currentNode = searchNodes[i];
         }
         else
         {
-            i = Random.Range(0, searchNodes.Count - 2);
+            i = Random.Range(0, searchNodes.Count - 1);
             list = new List<GameObject>(searchNodes);
             list.Remove(currentNode);
             currentNode = list[i];
             list.Clear();
         }
         agent.destination = currentNode.transform.position;
+        agent.isStopped = false;
         Debug.Log(currentNode);
     }
 
@@ -112,12 +136,12 @@ public class Boss : MonoBehaviour, IDamageable
         if (agent.velocity.x < 0)
         {
             spriteRenderer.flipX = true;
-            atkHitbox.center = new Vector3(-0.7f, -0.1f, 0);
+            atkHitbox.GetComponent<BoxCollider>().center = new Vector3(-1f, -0.1f, 0);
         }
         else if (agent.velocity.x > 0)
         {
             spriteRenderer.flipX = false;
-            atkHitbox.center = new Vector3(0.7f, -0.1f, 0);
+            atkHitbox.GetComponent<BoxCollider>().center = new Vector3(1f, -0.1f, 0);
         }
     }
 
@@ -126,7 +150,7 @@ public class Boss : MonoBehaviour, IDamageable
         isAgro = true;
         player = target;
         agroRange.SetActive(true);
-        Debug.Log("Is agro");
+        patrolTimer = 0;
     }
 
     public void StopAgro()
@@ -134,7 +158,8 @@ public class Boss : MonoBehaviour, IDamageable
         isAgro = false;
         player = null;
         agroRange.SetActive(false);
-        Debug.Log("No agro");
+        agent.ResetPath();
+        patrolTimer = 2f;
     }
 
     private void Die()
@@ -142,6 +167,7 @@ public class Boss : MonoBehaviour, IDamageable
         isAlive = false;
         agent.isStopped = true;
         animator.SetBool("Muerto", true);
+        DeactivateHitbox();
         StartCoroutine(DeathSequence());
     }
 
@@ -163,5 +189,58 @@ public class Boss : MonoBehaviour, IDamageable
         }
         GameEventManager.Instance.SetFlag(gameFlag);
         Destroy(gameObject);
+    }
+
+    private void StartAttack()
+    {
+        agent.isStopped = true;
+        animator.ResetTrigger("Atacar");
+        animator.SetTrigger("Atacar");
+        isAttacking = true;
+        cooldownTimer = 0;
+    }
+
+    private void CooldownCount()
+    {
+        if (cooldownTimer < atkCooldown)
+        {
+            cooldownTimer += Time.deltaTime;
+        }
+        else
+        {
+            isAttacking = false;
+            agent.isStopped = false;
+            DeactivateHitbox();
+        }
+    }
+
+    private void ChasePlayer()
+    {
+        agent.destination = player.transform.position;
+    }
+
+    public void ActivateHitbox()
+    {
+        atkHitbox.SetActive(true);
+    }
+
+    public void DeactivateHitbox()
+    {
+        atkHitbox.SetActive(false);
+    }
+
+    private void FacePlayer()
+    {
+        float dir = player.transform.position.x - transform.position.x;
+        if (dir < 0)
+        {
+            spriteRenderer.flipX = true;
+            atkHitbox.GetComponent<BoxCollider>().center = new Vector3(-1f, -0.1f, 0);
+        }
+        else if (dir > 0)
+        {
+            spriteRenderer.flipX = false;
+            atkHitbox.GetComponent<BoxCollider>().center = new Vector3(1f, -0.1f, 0);
+        }
     }
 }

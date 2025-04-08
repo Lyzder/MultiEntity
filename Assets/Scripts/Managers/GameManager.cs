@@ -1,10 +1,12 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance {  get; private set; }
     private bool isPaused;
+    [SerializeField] GameObject playerPrefab;
 
     private void Awake()
     {
@@ -28,6 +30,8 @@ public class GameManager : MonoBehaviour
     {
     SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+   
 
     // Carga la siguiente escena por index
     public void LoadNextScene()
@@ -62,12 +66,30 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("CreditsMenu", LoadSceneMode.Additive);
     }
 
-    public void TransitionPoint(string sceneName, Vector3 spawnPosition, GameObject player)
+    public void TransitionPoint(string sceneName, Vector3 spawnPosition, PlayerController player)
     {
-
-        SceneManager.LoadScene(sceneName);
-        player.transform.position = spawnPosition;
+        StartCoroutine(LoadSceneAndSpawnPlayer(sceneName, spawnPosition, player));
     }
+
+    private IEnumerator LoadSceneAndSpawnPlayer(string sceneName, Vector3 spawnPosition, PlayerController oldPlayer)
+    {
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+
+        // Wait until the scene is fully loaded
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
+        }
+
+        // After the scene is loaded
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null)
+            player = Instantiate(playerPrefab);
+
+        player.transform.position = spawnPosition;
+        player.GetComponent<PlayerController>().ForceTransition(oldPlayer.personaActiva);
+    }
+
 }
 /*Forma de utilizar funciones en otros scripts, llamar escenas por nombres
 GameManager.instance.LoadSceneByName("Menu") */

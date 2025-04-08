@@ -19,6 +19,11 @@ public class Hitbox : MonoBehaviour
         ignoreObjects.Clear();
     }
 
+    private void OnDisable()
+    {
+        ignoreObjects.Clear();
+    }
+
     private void OnTriggerStay(Collider other)
     {
         // Avoid hitting the owner (player) of the hitbox

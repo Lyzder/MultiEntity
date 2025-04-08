@@ -8,11 +8,10 @@ public class CameraController : MonoBehaviour
     [Header("Position Offset")]
     public Vector3 cameraOffset;
     private Transform player;
-
-    // Oclusion de objetos
-    [Header("Object Occlusion")]
-    public LayerMask occlusionLayer;
-    private List<Renderer> hiddenObjects = new List<Renderer>();
+    private Transform[] playerCheckPoints;
+    private bool checkpointsAssigned = false;
+    private List<Renderer> currentObstructions = new List<Renderer>();
+    private HashSet<Renderer> lastObstructions = new HashSet<Renderer>();
 
     // Start is called before the first frame update
     void Start()
@@ -23,9 +22,17 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
+        if (player == null)
+        {
+            player = GameObject.FindWithTag("Player").transform;
+            if (player == null) return;
+        }
+        if (player != null && !checkpointsAssigned)
+        {
+            AssignCheckPoints();
+        }
         FollowPlayer();
-        ClearHiddenObjects();
-        OccludeObjects();
+        HandleObstructions();
     }
 
     private void FollowPlayer()
@@ -33,71 +40,91 @@ public class CameraController : MonoBehaviour
         transform.position = player.position + cameraOffset;
     }
 
-    private void OccludeObjects()
+
+    private void HandleObstructions()
     {
-        Vector3 direction = player.position - transform.position;
-        float distance = direction.magnitude;
-
-        RaycastHit[] hits = Physics.RaycastAll(transform.position, direction, distance, occlusionLayer);
-        foreach (var hit in hits)
+        // Step 1: Assign checkpoints if not done
+        if (player != null && !checkpointsAssigned)
         {
-            Renderer renderer = hit.collider.GetComponent<Renderer>();
-            if (renderer != null)
-            {
+            AssignCheckPoints();
+            if (playerCheckPoints.Length == 0) return;
+        }
 
-                SetTransparency(renderer, 0.3f); // Make it semi-transparent
-                hiddenObjects.Add(renderer);
+        // Step 2: Reset previous obstructions
+        foreach (var rend in lastObstructions)
+        {
+            if (rend != null)
+            {
+                foreach (var mat in rend.materials)
+                {
+                    if (mat.HasProperty("_Alpha"))
+                        mat.SetFloat("_Alpha", 1.0f);
+                }
             }
         }
-    }
 
-    private void ClearHiddenObjects()
-    {
-        foreach (var obj in hiddenObjects)
-        {
-            if (obj != null) RestoreTransparency(obj);
-        }
-        hiddenObjects.Clear();
-    }
+        currentObstructions.Clear();
 
-    private void SetTransparency(Renderer renderer, float alpha)
-    {
-        foreach (Material mat in renderer.materials)
+        // Step 3: Count how many player points are blocked by each object
+        Dictionary<Renderer, int> hitCounts = new Dictionary<Renderer, int>();
+
+        foreach (var point in playerCheckPoints)
         {
-            if (mat.HasProperty("_BaseColor"))
+            Vector3 dir = point.position - transform.position;
+            float dist = dir.magnitude;
+
+            RaycastHit[] hits = Physics.RaycastAll(transform.position, dir, dist);
+            foreach (var hit in hits)
             {
-                // Ensure material is set to Transparent mode
-                mat.SetFloat("_Surface", 1); // 0 = Opaque, 1 = Transparent
-                mat.SetFloat("_Blend", 0);   // 0 = Alpha, 1 = Premultiplied, 2 = Additive
-                mat.SetFloat("_AlphaClip", 0); // Disable alpha clipping
-                mat.renderQueue = 3000; // Render after opaque objects
+                if (hit.collider.isTrigger) continue; // Skip trigger colliders
+                if (hit.collider.CompareTag("Player")) continue;
 
-                // Modify transparency
-                Color color = mat.GetColor("_BaseColor");
-                color.a = alpha;
-                mat.SetColor("_BaseColor", color);
+                Renderer rend = hit.collider.GetComponentInChildren<Renderer>();
+                if (rend != null)
+                {
+                    if (!hitCounts.ContainsKey(rend))
+                        hitCounts[rend] = 0;
+
+                    hitCounts[rend]++;
+                }
             }
         }
-    }
 
-    private void RestoreTransparency(Renderer renderer)
-    {
-        foreach (Material mat in renderer.materials)
+        // Step 4: Apply transparency only if object blocks enough check points
+        foreach (var kvp in hitCounts)
         {
-            if (mat.HasProperty("_BaseColor"))
-            {
-                // Restore material settings
-                mat.SetFloat("_Surface", 0); // 0 = Opaque, 1 = Transparent
-                mat.SetFloat("_Blend", 0);   // 0 = Alpha, 1 = Premultiplied, 2 = Additive
-                mat.SetFloat("_AlphaClip", 0);
-                mat.renderQueue = 2000; // Default for opaque objects
+            Renderer rend = kvp.Key;
+            int count = kvp.Value;
 
-                // Reset alpha to fully opaque
-                Color color = mat.GetColor("_BaseColor");
-                color.a = 1f;
-                mat.SetColor("_BaseColor", color);
+            if (count >= 2) // ? Adjust this number if you want to be more or less strict
+            {
+                foreach (var mat in rend.materials)
+                {
+                    if (mat.HasProperty("_Alpha"))
+                        mat.SetFloat("_Alpha", 0.3f); // Your desired transparency
+                }
+                currentObstructions.Add(rend);
             }
         }
+
+        lastObstructions = new HashSet<Renderer>(currentObstructions);
     }
 
+
+    private void AssignCheckPoints()
+    {
+        // Assuming the check points are children named "Check_Head", "Check_Torso", etc.
+        List<Transform> foundPoints = new List<Transform>();
+
+        foreach (Transform child in player.GetComponentsInChildren<Transform>())
+        {
+            if (child.name.StartsWith("Check_"))
+            {
+                foundPoints.Add(child);
+            }
+        }
+
+        playerCheckPoints = foundPoints.ToArray();
+        checkpointsAssigned = true;
+    }
 }

@@ -23,7 +23,8 @@ public class TransitionTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            GameManager.Instance.TransitionPoint(nombreEscena, spawnPoint, other.gameObject);
+            other.GetComponent<PlayerController>().SetSpawnPoint(spawnPoint);
+            GameManager.Instance.TransitionPoint(nombreEscena, spawnPoint, other.GetComponent<PlayerController>());
         }
     }
 }

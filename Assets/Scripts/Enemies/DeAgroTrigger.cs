@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AspectRatioEnforcer : MonoBehaviour
+public class DeAgroTrigger : MonoBehaviour
 {
+    [SerializeField] Boss owner;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -14,5 +16,13 @@ public class AspectRatioEnforcer : MonoBehaviour
     void Update()
     {
         
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            owner.StopAgro();
+        }
     }
 }

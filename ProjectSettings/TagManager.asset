@@ -14,6 +14,8 @@ TagManager:
   - Puerta2
   - Pista1
   - Cubo_a_Superar1
+  - Enemy
+  - Search Node
   layers:
   - Default
   - TransparentFX

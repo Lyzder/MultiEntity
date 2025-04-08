@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 using UnityEngine.Windows;
 
 public class PlayerController : MonoBehaviour, IDamageable
@@ -8,6 +9,11 @@ public class PlayerController : MonoBehaviour, IDamageable
     // Control de sprites
     private SpriteRenderer spriteRenderer;
     private Animator animator;
+    [SerializeField] Material highlightMaterial;
+    private static Color originalGlowColor;
+    public Color highlightGlowColor = new(128f, 122f, 0f);
+    [SerializeField] private float highlightDuration = 0.5f;
+    private Coroutine highlightCoroutine;
 
     // Físicas y colisiones
     private Rigidbody rb;
@@ -16,8 +22,9 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] float rangeSweepCast;
 
     // Estado del jugador
-    private bool isAlive;
-    private ushort health;
+    public bool isAlive { get; private set; }
+    [SerializeField] ushort health;
+    [SerializeField] ushort lives;
     public short personaActiva { get; private set; } // 0: Default. 1: Dep. 2: Int
     public enum Estados : ushort
     {
@@ -37,7 +44,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     private Vector2 moveInput;
     private float speed;
     private bool isSprint;
-    private bool isSneak;
+    public bool isSneak { get; private set; }
     private bool isObserve;
     private bool lookLeft;
     [Header("Movement speed")]
@@ -48,6 +55,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     // Input
     private InputSystem_Actions inputActions;
+    private PlayerInput playerInput;
 
     // Entorno
     [Header("Interaccion")]
@@ -60,6 +68,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     private InteractableBase notaAbierta;
     private bool invulnerable;
     private float iFramesTimer;
+    public Vector3 spanwPoint { get; private set; }
 
     // Efectos de sonido
     [Header("Efectos de sonido")]
@@ -67,22 +76,10 @@ public class PlayerController : MonoBehaviour, IDamageable
     public AudioClip stepSoftSfx;
     public AudioClip hurtSfx;
     public AudioClip pushSfx;
-
-    // Se crea una instancia para que se pueda mantener entre cambios de escenas
-    private static PlayerController instance;
+    public AudioClip changeSfx;
 
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         rb = GetComponent<Rigidbody>();
         cldr = GetComponent<BoxCollider>();
@@ -99,13 +96,15 @@ public class PlayerController : MonoBehaviour, IDamageable
         estadoJugador = 0;
         topSprite.enabled = false;
         objectsInRange = new List<InteractableBase>();
-
-        // Initialize Input Actions
-        inputActions = new InputSystem_Actions();
+        originalGlowColor = highlightMaterial.GetColor("_GlowColor");
     }
 
     private void OnEnable()
     {
+        if (inputActions == null)
+            inputActions = new InputSystem_Actions();
+
+        inputActions.Enable();
         // Subscribe to input events
         inputActions.Player.Move.performed += OnMove;
         inputActions.Player.Move.canceled += OnMove;
@@ -113,12 +112,19 @@ public class PlayerController : MonoBehaviour, IDamageable
         inputActions.Player.Sprint.canceled += OnSkill;
         inputActions.Player.Interact.performed += OnInteract;
         inputActions.Player.Attack.performed += OnAttack;
-        TranistionNotifier.OnAttackExit += FinishAttack;
+        TransitionNotifier.OnAttackExit += FinishAttack;
+        TransitionNotifier.OnChangeExit += ChangeFinish;
+        TransitionNotifier.OnDamageExit += ExitDamage;
     }
 
     private void OnDisable()
     {
+        TransitionNotifier.OnAttackExit -= FinishAttack;
+        TransitionNotifier.OnChangeExit -= ChangeFinish;
+        TransitionNotifier.OnDamageExit -= ExitDamage;
         // Unsubscribe to avoid leakages
+        if (inputActions == null)
+            return;
         inputActions.Disable();
         inputActions.Player.Move.performed -= OnMove;
         inputActions.Player.Move.canceled -= OnMove;
@@ -126,7 +132,6 @@ public class PlayerController : MonoBehaviour, IDamageable
         inputActions.Player.Sprint.canceled -= OnSkill;
         inputActions.Player.Interact.performed -= OnInteract;
         inputActions.Player.Attack.performed -= OnAttack;
-        TranistionNotifier.OnAttackExit -= FinishAttack;
     }
 
     // Start is called before the first frame update
@@ -138,6 +143,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     // Update is called once per frame
     void Update()
     {
+        if (!isAlive)
+            return;
         Move();
         ShowCanInteract();
     }
@@ -201,7 +208,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private void OnMove(InputAction.CallbackContext context)
     {
-        if (context.performed && !(estadoJugador == Estados.Daño || estadoJugador == Estados.Leer || estadoJugador == Estados.Cambio))
+        if (context.performed && estadoJugador != Estados.Daño && estadoJugador != Estados.Leer && estadoJugador != Estados.Cambio)
         {
             moveInput = context.ReadValue<Vector2>();
         }
@@ -269,20 +276,37 @@ public class PlayerController : MonoBehaviour, IDamageable
             return;
         if (estadoJugador == Estados.Empujar)
             StopPush();
-        Debug.Log("Cambio");
+        estadoJugador = Estados.Cambio;
+        moveInput = Vector2.zero;
+        isSprint = false;
+        isSneak = false;
+        isObserve = false;
+        invulnerable = true;
         personaActiva = (short)personaId;
+        animator.SetBool("Forced", false);
         animator.SetInteger("PersonaActiva", personaId);
+        AudioManager.Instance.PlaySFX(changeSfx);
+    }
+
+    public void ChangeFinish()
+    {
+        estadoJugador = Estados.Defecto;
+        invulnerable = false;
     }
 
     private void RotateSprite()
     {
+        if (estadoJugador == Estados.Empujar)
+            return;
         spriteRenderer.flipX = lookLeft;
         if (lookLeft)
         {
             frontalTrigger.center = new Vector3(-0.7f, 0f, -0.3f);
+            atkHitbox.GetComponent<BoxCollider>().center = new Vector3(-0.7f, 0, 0);
             return;
         }
         frontalTrigger.center = new Vector3(0.7f, 0f, -0.3f);
+        atkHitbox.GetComponent<BoxCollider>().center = new Vector3(0.7f, 0, 0);
     }
 
     private void ShowCanInteract()
@@ -317,6 +341,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         obj.transform.SetParent(transform);
         pushingObj = obj;
         estadoJugador = Estados.Empujar;
+        animator.SetBool("Empujar", true);
         StartCoroutine(PlayEffectLoop());
     }
 
@@ -325,6 +350,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         pushingObj.transform.SetParent(null);
         objectsInRange.Remove(pushingObj.GetComponent<InteractableBase>());
         pushingObj = null;
+        animator.SetBool("Empujar", false);
         estadoJugador = Estados.Defecto;
     }
 
@@ -371,7 +397,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         notaAbierta = nota;
     }
 
-    private void StopReading()
+    public void StopReading()
     {
         if(estadoJugador == Estados.Leer)
         {
@@ -404,7 +430,6 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         if (personaActiva != 1 || estadoJugador == Estados.Ataque || estadoJugador == Estados.Leer || estadoJugador == Estados.Empujar || estadoJugador == Estados.Daño)
             return;
-        Debug.Log("Ataque");
         estadoJugador = Estados.Ataque;
         animator.SetTrigger("Atacar");
         atkHitbox.SetActive(true);
@@ -425,9 +450,11 @@ public class PlayerController : MonoBehaviour, IDamageable
         estadoJugador = Estados.Daño;
         animator.ResetTrigger("Daño");
         animator.SetTrigger("Daño");
-        if (health == 0)
+        AudioManager.Instance.PlaySFX(hurtSfx);
+        if (health <= 0)
         {
-            // TODO jugador murio
+            isAlive = false;
+            animator.SetBool("Muerto", true);
         }
         else
         {
@@ -439,10 +466,10 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public bool IsInvulnerable()
     {
-        return invulnerable;
+        return invulnerable || !isAlive;
     }
 
-    private System.Collections.IEnumerator InvulnerableTimer()
+    private IEnumerator InvulnerableTimer()
     {
         iFramesTimer = 0;
         while (iFramesTimer < iFrames)
@@ -451,5 +478,75 @@ public class PlayerController : MonoBehaviour, IDamageable
             yield return null;
         }
         invulnerable = false;
+    }
+
+    public void SetSpawnPoint(Vector3 spawnPoint)
+    {
+        this.spanwPoint = spawnPoint;
+    }
+
+    public void SetHighlight()
+    {
+        if (highlightCoroutine != null)
+            StopCoroutine(highlightCoroutine);
+
+        highlightCoroutine = StartCoroutine(TransitionHighlightColor());
+    }
+
+    private IEnumerator TransitionHighlightColor()
+    {
+        Color startColor = highlightMaterial.GetColor("_GlowColor");
+        Color targetColor = highlightGlowColor;
+        float time = 0f;
+
+        while (time < highlightDuration)
+        {
+            time += Time.deltaTime;
+            Color newColor = Color.Lerp(startColor, targetColor, time / highlightDuration);
+            highlightMaterial.SetColor("_GlowColor", newColor);
+            yield return null;
+        }
+
+        // Ensure it's set exactly at the end
+        highlightMaterial.SetColor("_GlowColor", targetColor);
+    }
+
+    public void ResetHighlight()
+    {
+        if (highlightCoroutine != null)
+            StopCoroutine(highlightCoroutine);
+
+        highlightCoroutine = StartCoroutine(TransitionOriginalColor());
+    }
+
+    private IEnumerator TransitionOriginalColor()
+    {
+        Color startColor = highlightMaterial.GetColor("_GlowColor");
+        Color targetColor = originalGlowColor;
+        float time = 0f;
+
+        while (time < highlightDuration)
+        {
+            time += Time.deltaTime;
+            Color newColor = Color.Lerp(startColor, targetColor, time / highlightDuration);
+            highlightMaterial.SetColor("_GlowColor", newColor);
+            yield return null;
+        }
+
+        // Ensure it's set exactly at the end
+        highlightMaterial.SetColor("_GlowColor", targetColor);
+    }
+
+    private void ExitDamage()
+    {
+        estadoJugador = Estados.Defecto;
+    }
+
+    public void ForceTransition(int personaId)
+    {
+
+        animator.SetBool("Forced", true);
+        animator.SetInteger("PersonaActiva", personaId);
+        personaActiva = (short)personaId;
     }
 }

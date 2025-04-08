@@ -11,6 +11,7 @@ public class NumberpadObject : InteractableBase
     [SerializeField] Collider trigger;
     public string code;
     public int codeLength;
+    public AudioClip tecla;
     private string inputCode;
     private PlayerController player;
 
@@ -37,6 +38,7 @@ public class NumberpadObject : InteractableBase
 
     public void NumberInput(string input)
     {
+        AudioManager.Instance.PlaySFX(tecla);
         if (inputCode.Length < codeLength)
         {
             inputCode += input;
@@ -46,6 +48,7 @@ public class NumberpadObject : InteractableBase
 
     public void DeleteInput()
     {
+        AudioManager.Instance.PlaySFX(tecla);
         if (inputCode.Length > 0)
         {
             inputCode = inputCode.Remove(inputCode.Length - 1);
@@ -65,6 +68,7 @@ public class NumberpadObject : InteractableBase
 
     public void CheckCode()
     {
+        AudioManager.Instance.PlaySFX(tecla);
         if (code == inputCode)
         {
             //TODO

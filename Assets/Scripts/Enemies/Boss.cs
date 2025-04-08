@@ -14,11 +14,11 @@ public class Boss : MonoBehaviour, IDamageable
     [SerializeField] GameObject atkHitbox;
     [SerializeField] float atkCooldown;
     private float cooldownTimer;
-    private bool isAgro, isAlive, isAttacking;
+    private bool isAgro, isAlive, isAttacking, isRage;
     private NavMeshAgent agent;
     private List<GameObject> searchNodes;
     private GameObject currentNode;
-    private float patrolTimer;
+    private float patrolTimer, rageTreshold;
     private PlayerController player;
 
     [Header("Sprite")]
@@ -39,6 +39,7 @@ public class Boss : MonoBehaviour, IDamageable
         isAlive = true;
         isAgro = false;
         isAttacking = false;
+        rageTreshold = health * 2 / 3;
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.isStopped = false;
@@ -91,6 +92,10 @@ public class Boss : MonoBehaviour, IDamageable
         {
             Die();
         }
+        else if (!isRage && health <= rageTreshold)
+        {
+            Enrage();
+        }
     }
 
     private void SetNewDestination()
@@ -112,7 +117,6 @@ public class Boss : MonoBehaviour, IDamageable
         }
         agent.destination = currentNode.transform.position;
         agent.isStopped = false;
-        Debug.Log(currentNode);
     }
 
     private void SearchWait()
@@ -242,5 +246,11 @@ public class Boss : MonoBehaviour, IDamageable
             spriteRenderer.flipX = false;
             atkHitbox.GetComponent<BoxCollider>().center = new Vector3(1f, -0.1f, 0);
         }
+    }
+
+    private void Enrage()
+    {
+        isRage = true;
+        agent.speed *= 4 / 3;
     }
 }

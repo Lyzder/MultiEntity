@@ -9,6 +9,7 @@ public class DoorObject : InteractableBase
     private Animator animator;
     private Collider trigger;
     private bool abierta;
+    private AudioSource audioSource;
     public AudioClip openSfx;
     public bool autoOpen;
 
@@ -17,6 +18,7 @@ public class DoorObject : InteractableBase
     {
         animator = GetComponent<Animator>();
         trigger = GetComponent<Collider>();
+        audioSource = GetComponent<AudioSource>();
         abierta = false;
     }
 
@@ -40,8 +42,6 @@ public class DoorObject : InteractableBase
     {
         if (RevisarCondiciones())
         {
-            // TODO abrir puerta
-            DeactivateTrigger();
             player.ObjectOutOfRange(this);
             AbrirPuerta();
         }
@@ -71,7 +71,8 @@ public class DoorObject : InteractableBase
     {
         animator.SetBool("IsOpen", true);
         GameEventManager.Instance.SetFlag(eventoPuerta);
-        AudioManager.Instance.PlaySFX(openSfx);
+        AudioManager.Instance.PlaySFXDirectional(openSfx, audioSource);
+        DeactivateTrigger();
         abierta = true;
     }
 

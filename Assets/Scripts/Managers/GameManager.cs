@@ -1,12 +1,17 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance {  get; private set; }
     private bool isPaused;
     [SerializeField] GameObject playerPrefab;
+    public int playerLives;
+    private Vector3 playerSpawn;
+    private short spawnPersona;
+    public static event Action PlayerLost;
 
     private void Awake()
     {
@@ -20,15 +25,28 @@ public class GameManager : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
+
+    private void OnEnable()
+    {
+        PlayerController.PlayerDied += LoseLive;
+    }
+
+    private void OnDisable()
+    {
+        PlayerController.PlayerDied -= LoseLive;
+    }
+
     // nameScene: Nombre de la escena
     public void LoadSceneByName(string nameScene)
     {
+        GameEventManager.Instance.ResetHighlight();
         SceneManager.LoadScene(nameScene);
     }
 
     public void ReloadCurrentScene()
     {
-    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        GameEventManager.Instance.ResetHighlight();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
    
@@ -53,25 +71,31 @@ public class GameManager : MonoBehaviour
 
     public void PauseGame()
     {
+        GameEventManager.Instance.ResetHighlight();
         isPaused = !isPaused;
         Time.timeScale = isPaused ? 0 : 1;
     }
     public void OpenOptionsMenu()
     {
+        GameEventManager.Instance.ResetHighlight();
         SceneManager.LoadScene("OptionMenu", LoadSceneMode.Additive);
     }
 
     public void OpenCreditsMenu()
     {
+        GameEventManager.Instance.ResetHighlight();
         SceneManager.LoadScene("CreditsMenu", LoadSceneMode.Additive);
     }
 
     public void TransitionPoint(string sceneName, Vector3 spawnPosition, PlayerController player)
     {
-        StartCoroutine(LoadSceneAndSpawnPlayer(sceneName, spawnPosition, player));
+        GameEventManager.Instance.ResetHighlight();
+        spawnPersona = player.personaActiva;
+        playerSpawn = spawnPosition;
+        StartCoroutine(LoadSceneAndSpawnPlayer(sceneName, spawnPosition));
     }
 
-    private IEnumerator LoadSceneAndSpawnPlayer(string sceneName, Vector3 spawnPosition, PlayerController oldPlayer)
+    private IEnumerator LoadSceneAndSpawnPlayer(string sceneName, Vector3 spawnPosition)
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
 
@@ -87,9 +111,21 @@ public class GameManager : MonoBehaviour
             player = Instantiate(playerPrefab);
 
         player.transform.position = spawnPosition;
-        player.GetComponent<PlayerController>().ForceTransition(oldPlayer.personaActiva);
+        player.GetComponent<PlayerController>().ForceTransition(spawnPersona);
     }
 
+    private void LoseLive()
+    {
+        playerLives -= 1;
+        if (playerLives > 0)
+        {
+            StartCoroutine(LoadSceneAndSpawnPlayer(SceneManager.GetActiveScene().name, playerSpawn));
+        }
+        else
+        {
+            PlayerLost?.Invoke();
+        }
+    }
 }
 /*Forma de utilizar funciones en otros scripts, llamar escenas por nombres
 GameManager.instance.LoadSceneByName("Menu") */

@@ -7,7 +7,7 @@ using UnityEngine.AI;
 public class Boss : MonoBehaviour, IDamageable
 {
     public int health;
-    [SerializeField] Collider search, searchSmall;
+    [SerializeField] Collider search, searchSmall, agroRange;
     [SerializeField] GameObject atkHitbox;
     private bool isAgro, isAlive, isAttacking;
     private NavMeshAgent agent;
@@ -19,7 +19,8 @@ public class Boss : MonoBehaviour, IDamageable
     [SerializeField] SpriteRenderer spriteRenderer;
 
     [Header("Search")]
-    public float minWait, maxWait;
+    public float minWait;
+    public float maxWait;
 
     // Start is called before the first frame update
     void Start()

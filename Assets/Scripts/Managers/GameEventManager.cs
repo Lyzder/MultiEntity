@@ -75,6 +75,14 @@ public class GameEventManager : MonoBehaviour
         flags &= ~flag;
     }
 
+    /// <summary>
+    /// Bajar todas las banderas
+    /// </summary>
+    public void ClearAllFlags()
+    {
+        flags = GameFlags.None;
+    }
+
     private void SetHighlight(bool isHighlighted)
     {
         highlightMaterial.SetColor("_GlowColor", isHighlighted ? highlightGlowColor : originalGlowColor);

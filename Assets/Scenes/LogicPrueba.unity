@@ -698,7 +698,7 @@ PrefabInstance:
     - target: {fileID: 6160273146158246876, guid: b0a4e9eb6457815448a58c183a21123b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.22
+      value: 1.067
       objectReference: {fileID: 0}
     - target: {fileID: 6160273146158246876, guid: b0a4e9eb6457815448a58c183a21123b,
         type: 3}
@@ -3566,6 +3566,11 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 8505584162959206319, guid: f2b78cea603a54d43ac6ea9f58e59025,
         type: 3}
+      propertyPath: tieneSecreto
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8505584162959206319, guid: f2b78cea603a54d43ac6ea9f58e59025,
+        type: 3}
       propertyPath: mensajeSecreto
       value: 
       objectReference: {fileID: 21300000, guid: 9eca9837a557e3e4d82fab6b99438fdc,
@@ -3602,7 +3607,7 @@ PrefabInstance:
     - target: {fileID: 6160273146158246876, guid: b0a4e9eb6457815448a58c183a21123b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.22
+      value: 1.067
       objectReference: {fileID: 0}
     - target: {fileID: 6160273146158246876, guid: b0a4e9eb6457815448a58c183a21123b,
         type: 3}

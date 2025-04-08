@@ -3111,6 +3111,7 @@ MonoBehaviour:
   trigger: {fileID: 8989497905927095481}
   code: 69
   codeLength: 2
+  tecla: {fileID: 8300000, guid: 3595412511710004bb1f517a57cdaf9e, type: 3}
 --- !u!65 &8989497905927095481
 BoxCollider:
   m_ObjectHideFlags: 0

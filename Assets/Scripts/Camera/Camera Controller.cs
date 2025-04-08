@@ -76,6 +76,7 @@ public class CameraController : MonoBehaviour
             RaycastHit[] hits = Physics.RaycastAll(transform.position, dir, dist);
             foreach (var hit in hits)
             {
+                if (hit.collider.isTrigger) continue; // Skip trigger colliders
                 if (hit.collider.CompareTag("Player")) continue;
 
                 Renderer rend = hit.collider.GetComponentInChildren<Renderer>();

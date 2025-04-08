@@ -8,6 +8,7 @@ public class NumberpadObject : InteractableBase
     [SerializeField] GameObject panel;
     [SerializeField] TextMeshProUGUI text;
     [SerializeField] GameFlags flag;
+    [SerializeField] Collider trigger;
     public string code;
     public int codeLength;
     private string inputCode;
@@ -17,8 +18,8 @@ public class NumberpadObject : InteractableBase
     void Awake()
     {
         player = null;
-        code =  string.Empty;
-        text.text = code;
+        inputCode =  string.Empty;
+        text.text = string.Empty;
     }
 
     // Update is called once per frame
@@ -30,6 +31,7 @@ public class NumberpadObject : InteractableBase
     public override void Interact(PlayerController player)
     {
         OpenPanel();
+        this.player = player;
         player.StartReading(this);
     }
 
@@ -67,6 +69,9 @@ public class NumberpadObject : InteractableBase
         {
             //TODO
             GameEventManager.Instance.SetFlag(flag);
+            player.StopReading();
+            player.ObjectOutOfRange(this);
+            DeactivateTrigger();
         }
     }
 
@@ -79,5 +84,10 @@ public class NumberpadObject : InteractableBase
     public override void ClosePanel()
     {
         panel.SetActive(false);
+    }
+
+    private void DeactivateTrigger()
+    {
+        trigger.enabled = false;
     }
 }

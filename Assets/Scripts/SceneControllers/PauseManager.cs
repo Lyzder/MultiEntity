@@ -49,6 +49,7 @@ public class PauseManager : MonoBehaviour
 
     public void LoadScene(string name)
     {
+        GameEventManager.Instance.ClearAllFlags();
         Time.timeScale = 1;
         SceneManager.LoadScene(name);
     }

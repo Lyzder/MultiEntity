@@ -66,12 +66,12 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("CreditsMenu", LoadSceneMode.Additive);
     }
 
-    public void TransitionPoint(string sceneName, Vector3 spawnPosition)
+    public void TransitionPoint(string sceneName, Vector3 spawnPosition, PlayerController player)
     {
-        StartCoroutine(LoadSceneAndSpawnPlayer(sceneName, spawnPosition));
+        StartCoroutine(LoadSceneAndSpawnPlayer(sceneName, spawnPosition, player));
     }
 
-    private IEnumerator LoadSceneAndSpawnPlayer(string sceneName, Vector3 spawnPosition)
+    private IEnumerator LoadSceneAndSpawnPlayer(string sceneName, Vector3 spawnPosition, PlayerController oldPlayer)
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
 
@@ -87,6 +87,7 @@ public class GameManager : MonoBehaviour
             player = Instantiate(playerPrefab);
 
         player.transform.position = spawnPosition;
+        player.GetComponent<PlayerController>().ForceTransition(oldPlayer.personaActiva);
     }
 
 }

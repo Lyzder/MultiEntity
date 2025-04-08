@@ -8,10 +8,12 @@ using UnityEngine;
 public enum GameFlags
 {
     None = 0,
-    HasNote1Room1 = 1 << 0,  // 1
-    HasNote2Room1 = 1 << 1,  // 2
-    HasKeyRoom1 = 1 << 2,   // 4
-    OpenDoorRoom1 = 1 << 3,  // 8
+    HasKeyRoom1 = 1 << 0,   // 1
+    OpenDoorRoom1 = 1 << 1,  // 2
+    ButtonRoom2 = 1 << 2, // 4
+    CodeRoom2 = 1 << 3, // 8
+    OpenDoor1Room2 = 1 << 4, // 16
+    OpenDoor2Room2 = 1 << 5, // 32
 }
 
 public class GameEventManager : MonoBehaviour

@@ -828,6 +828,7 @@ MonoBehaviour:
   stepSoftSfx: {fileID: 8300000, guid: da06c7f80d9cca144b40892c562b5d52, type: 3}
   hurtSfx: {fileID: 8300000, guid: 3dbd1cb9a5afdc84596f02b5987ad75e, type: 3}
   pushSfx: {fileID: 8300000, guid: 918a881bf5a34a344b2eca8bd6ea4092, type: 3}
+  changeSfx: {fileID: 8300000, guid: dcd114c5280e0db4495c23f9fd1d6b3b, type: 3}
 --- !u!95 &8885184728218818992
 Animator:
   serializedVersion: 5

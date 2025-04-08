@@ -3178,13 +3178,13 @@ PrefabInstance:
         type: 3}
       propertyPath: mensaje
       value: 
-      objectReference: {fileID: 21300000, guid: 791ea3cba73d41a4fa120f82839af648,
+      objectReference: {fileID: 21300000, guid: e8999018cdf6f4149b05868607245294,
         type: 3}
     - target: {fileID: 2472089982686736396, guid: 08f2234a566878141b6fbfb555e08f3f,
         type: 3}
       propertyPath: mensajeSecreto
       value: 
-      objectReference: {fileID: 21300000, guid: 791ea3cba73d41a4fa120f82839af648,
+      objectReference: {fileID: 21300000, guid: e8999018cdf6f4149b05868607245294,
         type: 3}
     - target: {fileID: 3670669863517423646, guid: 08f2234a566878141b6fbfb555e08f3f,
         type: 3}

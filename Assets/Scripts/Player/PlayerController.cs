@@ -22,8 +22,9 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] float rangeSweepCast;
 
     // Estado del jugador
-    private bool isAlive;
-    private ushort health;
+    public bool isAlive { get; private set; }
+    [SerializeField] ushort health;
+    [SerializeField] ushort lives;
     public short personaActiva { get; private set; } // 0: Default. 1: Dep. 2: Int
     public enum Estados : ushort
     {
@@ -43,7 +44,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     private Vector2 moveInput;
     private float speed;
     private bool isSprint;
-    private bool isSneak;
+    public bool isSneak { get; private set; }
     private bool isObserve;
     private bool lookLeft;
     [Header("Movement speed")]
@@ -110,14 +111,16 @@ public class PlayerController : MonoBehaviour, IDamageable
         inputActions.Player.Sprint.canceled += OnSkill;
         inputActions.Player.Interact.performed += OnInteract;
         inputActions.Player.Attack.performed += OnAttack;
-        TranistionNotifier.OnAttackExit += FinishAttack;
-        TranistionNotifier.OnChangeExit += ChangeFinish;
+        TransitionNotifier.OnAttackExit += FinishAttack;
+        TransitionNotifier.OnChangeExit += ChangeFinish;
+        TransitionNotifier.OnDamageExit += ExitDamage;
     }
 
     private void OnDisable()
     {
-        TranistionNotifier.OnAttackExit -= FinishAttack;
-        TranistionNotifier.OnChangeExit -= ChangeFinish;
+        TransitionNotifier.OnAttackExit -= FinishAttack;
+        TransitionNotifier.OnChangeExit -= ChangeFinish;
+        TransitionNotifier.OnDamageExit -= ExitDamage;
         // Unsubscribe to avoid leakages
         if (inputActions == null)
             return;
@@ -139,6 +142,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     // Update is called once per frame
     void Update()
     {
+        if (!isAlive)
+            return;
         Move();
         ShowCanInteract();
     }
@@ -288,13 +293,17 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private void RotateSprite()
     {
+        if (estadoJugador == Estados.Empujar)
+            return;
         spriteRenderer.flipX = lookLeft;
         if (lookLeft)
         {
             frontalTrigger.center = new Vector3(-0.7f, 0f, -0.3f);
+            atkHitbox.GetComponent<BoxCollider>().center = new Vector3(-0.7f, 0, 0);
             return;
         }
         frontalTrigger.center = new Vector3(0.7f, 0f, -0.3f);
+        atkHitbox.GetComponent<BoxCollider>().center = new Vector3(0.7f, 0, 0);
     }
 
     private void ShowCanInteract()
@@ -329,6 +338,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         obj.transform.SetParent(transform);
         pushingObj = obj;
         estadoJugador = Estados.Empujar;
+        animator.SetBool("Empujar", true);
         StartCoroutine(PlayEffectLoop());
     }
 
@@ -337,6 +347,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         pushingObj.transform.SetParent(null);
         objectsInRange.Remove(pushingObj.GetComponent<InteractableBase>());
         pushingObj = null;
+        animator.SetBool("Empujar", false);
         estadoJugador = Estados.Defecto;
     }
 
@@ -436,9 +447,11 @@ public class PlayerController : MonoBehaviour, IDamageable
         estadoJugador = Estados.Daño;
         animator.ResetTrigger("Daño");
         animator.SetTrigger("Daño");
-        if (health == 0)
+        AudioManager.Instance.PlaySFX(hurtSfx);
+        if (health <= 0)
         {
-            // TODO jugador murio
+            isAlive = false;
+            animator.SetBool("Muerto", true);
         }
         else
         {
@@ -450,7 +463,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public bool IsInvulnerable()
     {
-        return invulnerable;
+        return invulnerable || !isAlive;
     }
 
     private IEnumerator InvulnerableTimer()
@@ -519,5 +532,10 @@ public class PlayerController : MonoBehaviour, IDamageable
 
         // Ensure it's set exactly at the end
         highlightMaterial.SetColor("_GlowColor", targetColor);
+    }
+
+    private void ExitDamage()
+    {
+        estadoJugador = Estados.Defecto;
     }
 }

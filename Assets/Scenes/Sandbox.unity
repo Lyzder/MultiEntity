@@ -1983,6 +1983,12 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!65 &1510584158 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 137704554013311120, guid: e2c981c6d63ad12489ca4ffc283ac078,
+    type: 3}
+  m_PrefabInstance: {fileID: 5597163902008782276}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1512480840
 GameObject:
   m_ObjectHideFlags: 0
@@ -3156,14 +3162,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4523863524152777943, guid: 4a403dfea2f6aee4aba70924dda7e9d5,
         type: 3}
-      propertyPath: maxWait
-      value: 6
+      propertyPath: gameFlag
+      value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 4523863524152777943, guid: 4a403dfea2f6aee4aba70924dda7e9d5,
+    - target: {fileID: 5932069108636269938, guid: 4a403dfea2f6aee4aba70924dda7e9d5,
         type: 3}
-      propertyPath: minWait
-      value: 3
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6772967968403658411, guid: 4a403dfea2f6aee4aba70924dda7e9d5,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3497449f50c29b6479c30983b21c5912,
+        type: 3}
     - target: {fileID: 8454994662144459458, guid: 4a403dfea2f6aee4aba70924dda7e9d5,
         type: 3}
       propertyPath: m_Name
@@ -3401,6 +3413,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 137704554013311120, guid: e2c981c6d63ad12489ca4ffc283ac078,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3947862303176102931, guid: e2c981c6d63ad12489ca4ffc283ac078,
+        type: 3}
+      propertyPath: frontalTrigger
+      value: 
+      objectReference: {fileID: 1510584158}
     - target: {fileID: 6143894946223593927, guid: e2c981c6d63ad12489ca4ffc283ac078,
         type: 3}
       propertyPath: m_LocalPosition.x

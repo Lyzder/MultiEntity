@@ -263,7 +263,11 @@ public class Boss : MonoBehaviour, IDamageable
     {
         switch (index)
         {
+            case 1:
+                AudioManager.Instance.PlaySFXDirectional(stepSfx2, audioSource); 
+                break;
             default:
+                AudioManager.Instance.PlaySFXDirectional(stepSfx1, audioSource);
                 break;
         }
     }

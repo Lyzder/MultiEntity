@@ -151,6 +151,11 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         if (!isAlive || estadoJugador == Estados.JuegoTerminado)
             return;
+        if (estadoJugador == Estados.Leer)
+        {
+            Time.timeScale = 0;
+            return;
+        }
         Move();
         ShowCanInteract();
     }
@@ -414,6 +419,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             notaAbierta.ClosePanel();
             notaAbierta = null;
         }
+        Time.timeScale = 1;
     }
 
     private System.Collections.IEnumerator PlayEffectLoop()
